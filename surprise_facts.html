@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surprise Ocean Facts - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&family=Fredoka+One&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-blue: #00223E;
+      --aqua: #00cfd5;
+      --coral: #FF6B6B;
+      --sand: #F7D6A4;
+      --text-light: #f0f8ff;
+      --text-dark: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, var(--deep-blue), #000);
+      color: var(--text-light);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: #87cefa;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .surprise-hero {
+      position: relative;
+      width: 100%;
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      overflow: hidden;
+    }
+
+    .hero-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+      color: var(--aqua);
+      text-shadow: 0 0 15px rgba(0, 207, 213, 0.5);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      max-width: 700px;
+      margin-bottom: 40px;
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 15px 25px;
+      border-radius: 30px;
+      backdrop-filter: blur(5px);
+    }
+
+    /* Surprise Fact Cards */
+    .facts-container {
+      padding: 60px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .surprise-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(5px);
+      border: 2px solid rgba(0, 207, 213, 0.3);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .surprise-card:hover {
+      transform: translateY(-10px) rotate(1deg);
+      box-shadow: 0 15px 30px rgba(0, 207, 213, 0.2);
+      border-color: var(--aqua);
+    }
+
+    .surprise-card::before {
+      content: '?';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      font-size: 8rem;
+      color: rgba(255, 255, 255, 0.05);
+      font-family: 'Fredoka One', cursive;
+      z-index: 0;
+    }
+
+    .fact-question {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--sand);
+      position: relative;
+      z-index: 1;
+    }
+
+    .fact-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      font-size: 1.1rem;
+      color: var(--text-light);
+      position: relative;
+      z-index: 1;
+    }
+
+    .surprise-card.active .fact-answer {
+      max-height: 300px;
+      margin-top: 15px;
+    }
+
+    /* Fun Fact Generator */
+    .fact-generator {
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 60px 20px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .generator-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: var(--sand);
+    }
+
+    .generator-btn {
+      padding: 15px 40px;
+      background-color: var(--coral);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 0 rgba(0,0,0,0.2);
+    }
+
+    .generator-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 0 rgba(0,0,0,0.2);
+    }
+
+    .generator-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    }
+
+    .generator-result {
+      max-width: 800px;
+      margin: 30px auto 0;
+      padding: 30px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+     footer {
+      background-color: #010f1c;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: auto;
+    }
+
+    .result-text {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+
+    .result-source {
+      font-style: italic;
+      color: var(--aqua);
+    }
+
+    /* Bubbles Animation */
+    .bubbles {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .bubble {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float-up linear infinite;
+    }
+
+    @keyframes float-up {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(-100px) translateX(100px);
+        opacity: 0;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .hero-title {
+        font-size: 3.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      nav a {
+        font-size: 0.95rem;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .fact-question {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .surprise-card {
+        padding: 20px;
+      }
+
+      .fact-question {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <div class="bubbles" id="bubbles"></div>
+
+  <section class="surprise-hero">
+    <h1 class="hero-title">Surprise Ocean Facts!</h1>
+    <p class="hero-subtitle">Uncover the weirdest, wildest, and most wonderful secrets of the deep!</p>
+  </section>
+
+  <section class="facts-container">
+    <!-- Fact 1 -->
+    <div class="surprise-card">
+      <h3 class="fact-question">Did you know the ocean has underwater lakes and rivers?</h3>
+      <div class="fact-answer">
+        <p>Yes! Brine pools form when extra-salty water collects in ocean floor depressions, creating "lakes" with shorelines. Some even have waves! Underwater rivers flow when sediment-heavy water moves along the seafloor.</p>
+      </div>
+    </div>
+
+    <!-- Fact 2 -->
+    <div class="surprise-card">
+      <h3 class="fact-question">Is it true that we've explored Mars more than our oceans?</h3>
+      <div class="fact-answer">
+        <p>Shockingly, yes! We've mapped 100% of Mars' surface but less than 20% of Earth's oceans. The deepest part of the Mariana Trench has been visited by fewer people than have walked on the Moon.</p>
+      </div>
+    </div>
+
+    <!-- Fact 3 -->
+    <div class="surprise-card">
+      <h3 class="fact-question">Can fish get sunburned?</h3>
+      <div class="fact-answer">
+        <p>Absolutely! Coral reef fish near the surface can develop UV-protective "sunscreen" compounds in their mucus. Some even seek shade under coral overhangs during peak sunlight hours.</p>
+      </div>
+    </div>
+
+    <!-- Fact 4 -->
+    <div class="surprise-card">
+      <h3 class="fact-question">Does the ocean have a "twilight zone"?</h3>
+      <div class="fact-answer">
+        <p>Yes! Between 200-1000m deep lies the mesopelagic zone where sunlight fades to darkness. Here, 90% of creatures glow (bioluminescence) to communicate, hunt, or hide from predators.</p>
+      </div>
+    </div>
+
+    <!-- Fact 5 -->
+    <div class="surprise-card">
+      <h3 class="fact-question">Are there really underwater volcanoes?</h3>
+      <div class="fact-answer">
+        <p>Over 1 million seamounts (underwater volcanoes) exist! The largest, Tamu Massif, is the size of New Mexico. Hydrothermal vents at these sites support unique ecosystems that don't need sunlight.</p>
+      </div>
+    </div>
+
+    <!-- Fact 6 -->
+    <div class="surprise-card">
+      <h3 class="fact-question">Can the ocean "sing"?</h3>
+      <div class="fact-answer">
+        <p>Yes! Scientists have recorded eerie "songs" from icebergs scraping the seafloor and whale calls that travel thousands of miles. Even coral reefs produce crackling sounds!</p>
+      </div>
+    </div>
+
+    <!-- Fact 7 -->
+    <div class="surprise-card">
+      <h3 class="fact-question">Is there really a "white whale" like Moby Dick?</h3>
+      <div class="fact-answer">
+        <p>Yes! Albino whales exist, including Migaloo, the famous white humpback whale spotted off Australia. Only about 1 in 10,000 whales are born albino.</p>
+      </div>
+    </div>
+
+    <!-- Fact 8 -->
+    <div class="surprise-card">
+      <h3 class="fact-question">Do fish drink water?</h3>
+      <div class="fact-answer">
+        <p>Saltwater fish actually drink constantly to avoid dehydration, while freshwater fish absorb water through their skin and rarely drink. Their kidneys work differently to balance salt levels!</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fact-generator">
+    <h2 class="generator-title">Random Ocean Fact Generator</h2>
+    <button class="generator-btn" id="generate-fact">Surprise Me!</button>
+    <div class="generator-result" id="fact-result">
+      <p class="result-text" id="random-fact">The ocean's longest mountain range is the Mid-Ocean Ridge, stretching over 40,389 miles (65,000 km) - nearly 10 times longer than the Andes, Rockies, and Himalayas combined.</p>
+      <p class="result-source">Source: NOAA Ocean Exploration</p>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Toggle fact cards
+      const surpriseCards = document.querySelectorAll('.surprise-card');
+      surpriseCards.forEach(card => {
+        card.addEventListener('click', function() {
+          this.classList.toggle('active');
+        });
+      });
+
+      // Random fact generator
+      const randomFacts = [
+        {
+          fact: "Octopuses have three hearts, nine brains, and blue blood! Two hearts pump blood to the gills, while the third keeps circulation flowing for the organs.",
+          source: "Smithsonian Ocean"
+        },
+        {
+          fact: "The loudest ocean sound ever recorded was the 'Bloop' in 1997 - an ultra-low frequency noise that matched the profile of a massive iceberg fracturing.",
+          source: "NOAA"
+        },
+        {
+          fact: "A single drop of seawater can contain millions of bacteria, thousands of phytoplankton, and even tiny zooplankton eggs.",
+          source: "NASA Earth Observatory"
+        },
+        {
+          fact: "The Greenland shark can live up to 500 years, making it the longest-living vertebrate on Earth!",
+          source: "Science Magazine"
+        },
+        {
+          fact: "Underwater waves (called internal waves) can be taller than skyscrapers but are completely invisible at the surface.",
+          source: "National Geographic"
+        },
+        {
+          fact: "The ocean contains 20 million tons of gold dissolved in its water—but extracting it would cost more than it's worth!",
+          source: "US Geological Survey"
+        },
+        {
+          fact: "Some deep-sea worms live near hydrothermal vents in water hot enough to melt lead (up to 176°F / 80°C)!",
+          source: "Nature Journal"
+        },
+        {
+          fact: "Dolphins have names for each other! They develop unique signature whistles to identify themselves.",
+          source: "Proceedings of the National Academy of Sciences"
+        }
+      ];
+
+      const generateBtn = document.getElementById('generate-fact');
+      const resultDiv = document.getElementById('fact-result');
+      const factText = document.getElementById('random-fact');
+      const factSource = document.querySelector('.result-source');
+
+      generateBtn.addEventListener('click', function() {
+        const randomIndex = Math.floor(Math.random() * randomFacts.length);
+        factText.textContent = randomFacts[randomIndex].fact;
+        factSource.textContent = `Source: ${randomFacts[randomIndex].source}`;
+        resultDiv.classList.add('active');
+      });
+
+      // Create floating bubbles
+      const bubblesContainer = document.getElementById('bubbles');
+      for (let i = 0; i < 50; i++) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
+        bubble.style.width = `${Math.random() * 20 + 5}px`;
+        bubble.style.height = bubble.style.width;
+        bubble.style.left = `${Math.random() * 100}%`;
+        bubble.style.bottom = `${Math.random() * 100}%`;
+        bubble.style.animationDuration = `${Math.random() * 10 + 5}s`;
+        bubble.style.animationDelay = `${Math.random() * 5}s`;
+        bubblesContainer.appendChild(bubble);
+      }
+    });
+  </script>
+</body>
+</html>

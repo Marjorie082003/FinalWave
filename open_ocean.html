@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Open Ocean - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --dark-blue: #00223E;
+      --deep-black: #000;
+      --accent: #0a1a2f;
+      --text-light: #ccc;
+      --text-muted: #aaa;
+      --aqua: #00cfd5;
+      --sunlight: #ffde7d;
+      --midnight-blue: #0a2463;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, var(--dark-blue), var(--deep-black));
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Navbar (Consistent with other pages) */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: #87cefa;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Horizontal Scrolling Main Content */
+    .ocean-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .horizontal-scroll {
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      height: 100vh;
+      scroll-behavior: smooth;
+    }
+
+    .horizontal-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ocean-section {
+      min-width: 100vw;
+      height: 100vh;
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10%;
+    }
+
+    /* Sunlight Zone (First Section) */
+    .sunlight-zone {
+      background: linear-gradient(to bottom, 
+        rgba(0, 150, 255, 0.2), 
+        var(--dark-blue));
+    }
+
+    .sunlight-zone::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(
+        circle at 20% 30%,
+        var(--sunlight) 0%,
+        transparent 50%
+      );
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    /* Twilight Zone (Second Section) */
+    .twilight-zone {
+      background: linear-gradient(to bottom, 
+        var(--dark-blue), 
+        var(--midnight-blue));
+    }
+
+    /* Midnight Zone (Third Section) */
+    .midnight-zone {
+      background: linear-gradient(to bottom, 
+        var(--midnight-blue), 
+        var(--deep-black));
+    }
+
+    /* Abyss (Fourth Section) */
+    .abyss-zone {
+      background: var(--deep-black);
+    }
+
+    /* Section Titles */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      margin-bottom: 20px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .section-title.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-subtitle {
+      font-size: 1.3rem;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto 40px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+    }
+
+    .section-subtitle.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Floating Particles (Depth Effect) */
+    .depth-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.7; }
+      100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+    }
+
+    /* Species Explorer (Carousel) */
+    .species-explorer {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      gap: 30px;
+      overflow-x: auto;
+      padding: 20px;
+      scroll-snap-type: x proximity;
+    }
+
+    .species-card {
+      min-width: 300px;
+      background: rgba(10, 26, 47, 0.7);
+      border-radius: 15px;
+      overflow: hidden;
+      scroll-snap-align: center;
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(0, 207, 213, 0.2);
+    }
+
+    .species-card:hover {
+      transform: scale(1.05);
+      border-color: var(--aqua);
+    }
+
+    .species-image {
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .species-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .species-card:hover .species-image img {
+      transform: scale(1.1);
+    }
+
+    .species-info {
+      padding: 20px;
+    }
+
+    .species-info h3 {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+      color: #aee0ff;
+    }
+
+    .species-info .scientific-name {
+      font-style: italic;
+      color: var(--aqua);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .species-info p {
+      color: var(--text-light);
+    }
+
+    /* Scroll Down Indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 135px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--aqua);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: pulse 2s infinite;
+    }
+
+    .scroll-hint i {
+      margin-top: 10px;
+      font-size: 1.5rem;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    /* Footer (Consistent with other pages) */
+    footer {
+      background-color: #010f1c;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .section-title {
+        font-size: 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      nav a {
+        font-size: 0.95rem;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+      }
+
+      .section-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .species-explorer {
+        flex-direction: column;
+        overflow-x: hidden;
+      }
+
+      .species-card {
+        min-width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .section-subtitle {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <div class="ocean-container">
+    <div class="horizontal-scroll">
+      <!-- Sunlight Zone -->
+      <section class="ocean-section sunlight-zone">
+        <div class="depth-particles" id="sunlight-particles"></div>
+        <div class="content">
+          <h1 class="section-title">The Sunlight Zone</h1>
+          <p class="section-subtitle">Where the ocean meets the sky, teeming with life and energy.</p>
+          <div class="species-explorer">
+            <div class="species-card">
+              <div class="species-image">
+                <img src="images/Bluefin Tuna.jpg" alt="Bluefin Tuna">
+              </div>
+              <div class="species-info">
+                <h3>Bluefin Tuna</h3>
+                <span class="scientific-name">Thunnus thynnus</span>
+                <p>One of the fastest fish in the ocean, reaching speeds of 43 mph.</p>
+              </div>
+            </div>
+            <div class="species-card">
+              <div class="species-image">
+                <img src="images/Manta-facts-Header-shutterstock_1145084270-scaled.jpg" alt="Manta Ray">
+              </div>
+              <div class="species-info">
+                <h3>Manta Ray</h3>
+                <span class="scientific-name">Mobula birostris</span>
+                <p>Gentle giants with wingspans reaching up to 23 feet.</p>
+              </div>
+            </div>
+            <div class="species-card">
+              <div class="species-image">
+                <img src="images/Exocoetidae_1small-600x372.jpg" alt="Flying Fish">
+              </div>
+              <div class="species-info">
+                <h3>Flying Fish</h3>
+                <span class="scientific-name">Exocoetidae</span>
+                <p>Can glide over 650 feet above water to escape predators.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-hint">
+          <span>Swipe Right</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </section>
+
+      <!-- Twilight Zone -->
+      <section class="ocean-section twilight-zone">
+        <div class="depth-particles" id="twilight-particles"></div>
+        <div class="content">
+          <h1 class="section-title">The Twilight Zone</h1>
+          <p class="section-subtitle">A world of shadows, where sunlight fades and bioluminescence begins.</p>
+          <div class="species-explorer">
+            <div class="species-card">
+              <div class="species-image">
+                <img src="images/Vampire-Squid-1.jpg" alt="Vampire Squid">
+              </div>
+              <div class="species-info">
+                <h3>Vampire Squid</h3>
+                <span class="scientific-name">Vampyroteuthis infernalis</span>
+                <p>Uses bioluminescent "ink" to confuse predators in the dark.</p>
+              </div>
+            </div>
+            <div class="species-card">
+              <div class="species-image">
+                <img src="images/lovely-hatchetfish-argyropelecus-dant-fenolio.jpg" alt="Hatchetfish">
+              </div>
+              <div class="species-info">
+                <h3>Hatchetfish</h3>
+                <span class="scientific-name">Sternoptychidae</span>
+                <p>Uses counter-illumination to hide from predators below.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Midnight Zone -->
+      <section class="ocean-section midnight-zone">
+        <div class="depth-particles" id="midnight-particles"></div>
+        <div class="content">
+          <h1 class="section-title">The Midnight Zone</h1>
+          <p class="section-subtitle">Total darkness, extreme pressure, and alien-like creatures.</p>
+          <div class="species-explorer">
+            <div class="species-card">
+              <div class="species-image">
+                <img src="images/Angler-Fish.jpg" alt="Anglerfish">
+              </div>
+              <div class="species-info">
+                <h3>Anglerfish</h3>
+                <span class="scientific-name">Melanocetus johnsonii</span>
+                <p>Uses a bioluminescent lure to attract prey in the dark.</p>
+              </div>
+            </div>
+            <div class="species-card">
+              <div class="species-image">
+                <img src="images/e6755a4c-7fce-41fc-bd30-00382a45cd87_1052x726.jpg" alt="Gulper Eel">
+              </div>
+              <div class="species-info">
+                <h3>Gulper Eel</h3>
+                <span class="scientific-name">Eurypharynx pelecanoides</span>
+                <p>Has a mouth larger than its body to swallow prey whole.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- The Abyss -->
+      <section class="ocean-section abyss-zone">
+        <div class="depth-particles" id="abyss-particles"></div>
+        <div class="content">
+          <h1 class="section-title">The Abyss</h1>
+          <p class="section-subtitle">A cold, crushing world where life exists in slow motion.</p>
+          <div class="species-explorer">
+            <div class="species-card">
+              <div class="species-image">
+                <img src="images/494826962_4168263366776966_5725602957388280767_n.png" alt="Giant Isopod">
+              </div>
+              <div class="species-info">
+                <h3>Giant Isopod</h3>
+                <span class="scientific-name">Bathynomus giganteus</span>
+                <p>Can survive years without food in this harsh environment.</p>
+              </div>
+            </div>
+            <div class="species-card">
+              <div class="species-image">
+                <img src="images/GettyImages-98172421_large-56ae05cc3df78cf772b9096f.jpg" alt="Deep-sea Cucumber">
+              </div>
+              <div class="species-info">
+                <h3>Deep-sea Cucumber</h3>
+                <span class="scientific-name">Peniagone sp.</span>
+                <p>Moves slowly across the seafloor, feeding on organic debris.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    // Create floating particles for depth effect
+    function createParticles(containerId, count, sizeRange, speedRange) {
+      const container = document.getElementById(containerId);
+      
+      for (let i = 0; i < count; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Random size
+        const size = sizeRange[0] + Math.random() * (sizeRange[1] - sizeRange[0]);
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random animation duration
+        const duration = speedRange[0] + Math.random() * (speedRange[1] - speedRange[0]);
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        
+        container.appendChild(particle);
+      }
+    }
+    
+    // Initialize particles for each zone
+    window.addEventListener('load', () => {
+      createParticles('sunlight-particles', 30, [1, 3], [10, 20]);
+      createParticles('twilight-particles', 20, [1, 2], [15, 25]);
+      createParticles('midnight-particles', 15, [1, 2], [20, 30]);
+      createParticles('abyss-particles', 10, [1, 1.5], [25, 40]);
+      
+      // Animate section titles on scroll
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      document.querySelectorAll('.section-title, .section-subtitle').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep Ocean Quiz - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-blue: #00223E;
+      --deep-black: #000;
+      --accent: #0a1a2f;
+      --text-light: #ccc;
+      --text-muted: #aaa;
+      --aqua: #00cfd5;
+      --correct: #4CAF50;
+      --incorrect: #F44336;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, var(--dark-blue), var(--deep-black));
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: #87cefa;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .quiz-header {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      background-image: url('images/996f83f458725c3e78daec4523ae2201.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .quiz-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      margin-bottom: 15px;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .quiz-header p {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+
+    .wave {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 120px;
+      background: url('https://svgshare.com/i/uYi.svg');
+      background-size: cover;
+      animation: waveMove 10s infinite linear;
+    }
+
+    @keyframes waveMove {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 1000px; }
+    }
+
+    .quiz-container {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 0 20px;
+      width: 100%;
+    }
+
+    .quiz-progress {
+      width: 100%;
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--aqua), #00a2ff);
+      width: 0%;
+      transition: width 0.5s ease;
+      border-radius: 4px;
+    }
+
+    .quiz-card {
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 18px;
+      padding: 30px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+      border: 1px solid #00cfd520;
+      transform: translateY(20px);
+      opacity: 0;
+      animation: fadeInUp 0.5s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .quiz-question {
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      color: #aee0ff;
+      font-weight: 500;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .quiz-option {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-option:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .quiz-option.correct {
+      background-color: rgba(76, 175, 80, 0.2);
+      border-color: var(--correct);
+    }
+
+    .quiz-option.incorrect {
+      background-color: rgba(244, 67, 54, 0.2);
+      border-color: var(--incorrect);
+    }
+
+    .quiz-option.selected {
+      background-color: rgba(0, 207, 213, 0.2);
+      border-color: var(--aqua);
+    }
+
+    .quiz-option input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .quiz-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .quiz-btn {
+      background: linear-gradient(135deg, var(--aqua), #00a2ff);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 207, 213, 0.3);
+    }
+
+    .quiz-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 207, 213, 0.4);
+    }
+
+    .quiz-btn:disabled {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .quiz-results {
+      text-align: center;
+      padding: 40px;
+      display: none;
+    }
+
+    .quiz-results h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #aee0ff;
+    }
+
+    .quiz-score {
+      font-size: 5rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, var(--aqua), #00a2ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 20px 0;
+    }
+
+    .quiz-feedback {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .quiz-restart {
+      background: linear-gradient(135deg, var(--aqua), #00a2ff);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 207, 213, 0.3);
+    }
+
+    .quiz-restart:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 207, 213, 0.4);
+    }
+
+    .deep-fact {
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 18px;
+      padding: 25px;
+      margin: 40px auto;
+      max-width: 800px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+      border: 1px solid #00cfd520;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .deep-fact-icon {
+      font-size: 2.5rem;
+      color: var(--aqua);
+      flex-shrink: 0;
+    }
+
+    .deep-fact-content h3 {
+      color: #aee0ff;
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .deep-fact-content p {
+      color: var(--text-light);
+    }
+
+    footer {
+      background-color: #010f1c;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .quiz-header {
+        height: 250px;
+        padding: 30px 20px;
+      }
+
+      .quiz-header h1 {
+        font-size: 2.5rem;
+      }
+
+      .quiz-header p {
+        font-size: 1rem;
+      }
+
+      .quiz-question {
+        font-size: 1.3rem;
+      }
+
+      .deep-fact {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      nav a {
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .quiz-header {
+        height: 200px;
+      }
+
+      .quiz-header h1 {
+        font-size: 2rem;
+      }
+
+      .quiz-card {
+        padding: 20px;
+      }
+
+      .quiz-navigation {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .quiz-btn {
+        width: 100%;
+      }
+
+      .quiz-score {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <div class="quiz-header">
+    <h1>Deep Ocean Quiz</h1>
+    <p>Test your knowledge about the mysterious depths of our oceans and the fascinating creatures that inhabit them</p>
+    <div class="wave"></div>
+  </div>
+
+  <div class="quiz-container">
+    <div class="quiz-progress">
+      <div class="quiz-progress-bar"></div>
+    </div>
+
+    <div class="quiz-card" id="question-container">
+      <div class="quiz-question" id="question">What is the deepest known point in the ocean?</div>
+      <div class="quiz-options" id="options">
+        <label class="quiz-option">
+          <input type="radio" name="answer" value="0">
+          <span>Mariana Trench</span>
+        </label>
+        <label class="quiz-option">
+          <input type="radio" name="answer" value="1">
+          <span>Puerto Rico Trench</span>
+        </label>
+        <label class="quiz-option">
+          <input type="radio" name="answer" value="2">
+          <span>Tonga Trench</span>
+        </label>
+        <label class="quiz-option">
+          <input type="radio" name="answer" value="3">
+          <span>Java Trench</span>
+        </label>
+      </div>
+      <div class="quiz-navigation">
+        <button class="quiz-btn" id="prev-btn" disabled>Previous</button>
+        <button class="quiz-btn" id="next-btn">Next</button>
+      </div>
+    </div>
+
+    <div class="quiz-results" id="results">
+      <h2>Quiz Completed!</h2>
+      <div class="quiz-score" id="score">8/10</div>
+      <p class="quiz-feedback" id="feedback">Impressive! You clearly know your deep ocean facts. The abyss has few secrets from you!</p>
+      <button class="quiz-restart" id="restart-btn">Take Quiz Again</button>
+    </div>
+
+    <div class="deep-fact">
+      <div class="deep-fact-icon">🌊</div>
+      <div class="deep-fact-content">
+        <h3>Did You Know?</h3>
+        <p>More than 80% of our ocean is unmapped, unobserved, and unexplored. The deep sea is Earth's last great frontier, with new species discovered on nearly every expedition into its depths.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    // Quiz questions data
+    const quizQuestions = [
+      {
+        question: "What is the deepest known point in the ocean?",
+        options: ["Mariana Trench", "Puerto Rico Trench", "Tonga Trench", "Java Trench"],
+        answer: 0,
+        fact: "The Mariana Trench's Challenger Deep is the deepest known point in Earth's oceans at approximately 10,984 meters (36,037 ft) deep."
+      },
+      {
+        question: "Which of these creatures is a true deep-sea species?",
+        options: ["Giant squid", "Clownfish", "Dolphin", "Sea turtle"],
+        answer: 0,
+        fact: "The giant squid (Architeuthis dux) can live at depths of up to 1,000 meters and was only first photographed alive in its natural habitat in 2004."
+      },
+      {
+        question: "What is the name of the phenomenon where deep-sea creatures produce their own light?",
+        options: ["Bioluminescence", "Phosphorescence", "Fluorescence", "Chemiluminescence"],
+        answer: 0,
+        fact: "Bioluminescence is used by about 90% of deep-sea creatures for camouflage, attracting mates, and luring prey in the perpetual darkness of the deep ocean."
+      },
+      {
+        question: "How much of the Earth's surface is covered by ocean?",
+        options: ["About 50%", "About 60%", "About 70%", "About 80%"],
+        answer: 2,
+        fact: "The ocean covers approximately 71% of Earth's surface and contains about 97% of Earth's water, yet more than 80% remains unexplored."
+      },
+      {
+        question: "What is the average depth of the ocean?",
+        options: ["1,200 meters", "2,500 meters", "3,800 meters", "5,000 meters"],
+        answer: 2,
+        fact: "The average depth of the ocean is about 3,800 meters (12,467 ft), which is roughly equivalent to the height of 13 Empire State Buildings stacked on top of each other."
+      },
+      {
+        question: "Which zone of the ocean is completely dark?",
+        options: ["Sunlight Zone", "Twilight Zone", "Midnight Zone", "Abyssal Zone"],
+        answer: 2,
+        fact: "The Midnight Zone (Bathypelagic Zone) extends from 1,000 to 4,000 meters deep where no sunlight penetrates. Temperatures are near freezing and pressure can reach 5,850 pounds per square inch."
+      },
+      {
+        question: "What unique adaptation do many deep-sea fish have to detect prey?",
+        options: ["Large eyes", "Bioluminescent lures", "Lateral line system", "All of the above"],
+        answer: 3,
+        fact: "Deep-sea fish have evolved remarkable adaptations including enlarged eyes to capture scarce light, bioluminescent lures to attract prey, and sensitive lateral lines to detect vibrations in the water."
+      },
+      {
+        question: "What causes the extreme pressure in the deep ocean?",
+        options: ["The weight of the water above", "Tectonic plate movement", "Underwater volcanic activity", "Earth's magnetic field"],
+        answer: 0,
+        fact: "Pressure increases by about 1 atmosphere (14.7 psi) for every 10 meters of depth. At the bottom of the Mariana Trench, the pressure is over 1,000 times that at the surface!"
+      },
+      {
+        question: "Which of these is NOT a deep-sea hydrothermal vent feature?",
+        options: ["Black smokers", "Cold seeps", "White smokers", "Lost City"],
+        answer: 1,
+        fact: "Cold seeps are areas where hydrocarbon-rich fluid seeps out from the sea floor, but unlike hydrothermal vents, the fluid is at near-ambient temperature. They still support unique ecosystems."
+      },
+      {
+        question: "How do deep-sea creatures survive the crushing pressure?",
+        options: ["They have special pressure-resistant bones", "Their bodies are mostly water", "They live in pressure-resistant shells", "They have no internal air spaces"],
+        answer: 3,
+        fact: "Deep-sea organisms don't have air-filled spaces like lungs or swim bladders that would collapse under pressure. Their bodies are mostly water and organic compounds that are incompressible."
+      }
+    ];
+
+    // Quiz state variables
+    let currentQuestion = 0;
+    let score = 0;
+    let userAnswers = Array(quizQuestions.length).fill(null);
+
+    // DOM elements
+    const questionElement = document.getElementById('question');
+    const optionsElement = document.getElementById('options');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const progressBar = document.querySelector('.quiz-progress-bar');
+    const questionContainer = document.getElementById('question-container');
+    const resultsContainer = document.getElementById('results');
+    const scoreElement = document.getElementById('score');
+    const feedbackElement = document.getElementById('feedback');
+    const restartBtn = document.getElementById('restart-btn');
+    const factElement = document.querySelector('.deep-fact-content p');
+
+    // Initialize quiz
+    function loadQuestion() {
+      const question = quizQuestions[currentQuestion];
+      questionElement.textContent = question.question;
+      
+      // Update options
+      optionsElement.innerHTML = '';
+      question.options.forEach((option, index) => {
+        const optionElement = document.createElement('label');
+        optionElement.className = 'quiz-option';
+        if (userAnswers[currentQuestion] === index) {
+          optionElement.classList.add('selected');
+        }
+        
+        optionElement.innerHTML = `
+          <input type="radio" name="answer" value="${index}" ${userAnswers[currentQuestion] === index ? 'checked' : ''}>
+          <span>${option}</span>
+        `;
+        optionsElement.appendChild(optionElement);
+      });
+      
+      // Update progress bar
+      progressBar.style.width = `${((currentQuestion + 1) / quizQuestions.length) * 100}%`;
+      
+      // Update navigation buttons
+      prevBtn.disabled = currentQuestion === 0;
+      nextBtn.textContent = currentQuestion === quizQuestions.length - 1 ? 'Submit' : 'Next';
+      
+      // Update deep fact
+      factElement.textContent = quizQuestions[currentQuestion].fact;
+      
+      // Add event listeners to options
+      document.querySelectorAll('.quiz-option').forEach(option => {
+        option.addEventListener('click', () => {
+          const selectedOption = option.querySelector('input').value;
+          userAnswers[currentQuestion] = parseInt(selectedOption);
+          
+          // Update UI
+          document.querySelectorAll('.quiz-option').forEach(opt => {
+            opt.classList.remove('selected');
+          });
+          option.classList.add('selected');
+        });
+      });
+    }
+
+    // Show results
+    function showResults() {
+      // Calculate score
+      score = 0;
+      quizQuestions.forEach((question, index) => {
+        if (userAnswers[index] === question.answer) {
+          score++;
+        }
+      });
+      
+      // Display results
+      questionContainer.style.display = 'none';
+      resultsContainer.style.display = 'block';
+      scoreElement.textContent = `${score}/${quizQuestions.length}`;
+      
+      // Custom feedback based on score
+      const percentage = (score / quizQuestions.length) * 100;
+      if (percentage >= 90) {
+        feedbackElement.textContent = "Outstanding! You're a deep ocean expert! The abyss holds no secrets from you.";
+      } else if (percentage >= 70) {
+        feedbackElement.textContent = "Great job! You know your way around the deep sea, but there's still more to explore.";
+      } else if (percentage >= 50) {
+        feedbackElement.textContent = "Not bad! The deep ocean is mysterious, and you're starting to uncover its secrets.";
+      } else {
+        feedbackElement.textContent = "Keep exploring! The deep ocean is full of wonders waiting to be discovered.";
+      }
+    }
+
+    // Event listeners
+    nextBtn.addEventListener('click', () => {
+      if (userAnswers[currentQuestion] === null) {
+        alert('Please select an answer before proceeding.');
+        return;
+      }
+      
+      if (currentQuestion < quizQuestions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    });
+    
+    prevBtn.addEventListener('click', () => {
+      currentQuestion--;
+      loadQuestion();
+    });
+    
+    restartBtn.addEventListener('click', () => {
+      currentQuestion = 0;
+      score = 0;
+      userAnswers = Array(quizQuestions.length).fill(null);
+      questionContainer.style.display = 'block';
+      resultsContainer.style.display = 'none';
+      loadQuestion();
+    });
+
+    // Start the quiz
+    loadQuestion();
+  </script>
+
+</body>
+</html>

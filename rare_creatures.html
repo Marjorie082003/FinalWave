@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rare Creatures - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --dark-blue: #00223E;
+      --deep-black: #000;
+      --accent: #0a1a2f;
+      --text-light: #ccc;
+      --text-muted: #aaa;
+      --aqua: #00cfd5;
+      --bioluminescent: #00f7ff;
+      --deep-purple: #00223E;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, var(--dark-blue), var(--deep-black));
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+  
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: #87cefa;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+   
+   .hero {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align content to the left */
+  height: 100vh; /* Full height hero section */
+  padding-left: 80px; /* Space from the left edge */
+}
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,20,40,0.8));
+      z-index: 1;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('images/b340950c927dffe1f76869f5e5d6d275.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      animation: floatBackground 30s infinite alternate ease-in-out;
+    }
+
+    @keyframes floatBackground {
+      0% { transform: scale(1) translateY(0); }
+      100% { transform: scale(1.05) translateY(-20px); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 0 20px;
+    }
+
+.hero h1 {
+  font-family: 'Marcellus', serif; /* Ocean-vibe font */
+  font-size: 4.5rem;
+  margin-bottom: px;
+  color: white;
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  text-shadow: none; /* No glow */
+  animation: none; /* No glow animation */
+}
+
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px rgba(0, 207, 213, 0.3); }
+      to { text-shadow: 0 0 20px rgba(0, 207, 213, 0.6), 0 0 30px rgba(0, 207, 213, 0.4); }
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      color: var(--text-light);
+      margin-bottom: 30px;
+    }
+
+        .scroll-down {
+  position: absolute;
+  bottom: 200px; 
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--aqua);
+  font-size: 1.5rem;
+  animation: bounce 2s infinite;
+  z-index: 2;
+}
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+      40% { transform: translateY(-20px) translateX(-50%); }
+      60% { transform: translateY(-10px) translateX(-50%); }
+    }
+
+  
+    .rare-creatures {
+      padding: 80px 20px;
+      background: var(--deep-black);
+      position: relative;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+   .section-title h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: #ffffff !important;
+}
+
+
+    .section-title p {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .creature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .creature-card {
+      background: rgba(10, 26, 47, 0.7);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      position: relative;
+      border: 1px solid rgba(0, 207, 213, 0.2);
+    }
+
+    .creature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 207, 213, 0.2);
+      border-color: var(--aqua);
+    }
+
+    .creature-image {
+      height: 250px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .creature-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .creature-card:hover .creature-image img {
+      transform: scale(1.1);
+    }
+
+    .creature-info {
+      padding: 20px;
+    }
+
+    .creature-info h3 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #aee0ff;
+    }
+
+    .creature-info .scientific-name {
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .creature-info p {
+      margin-bottom: 15px;
+      color: var(--text-light);
+    }
+
+    .depth-indicator {
+      height: 4px;
+      background: linear-gradient(90deg, var(--aqua), #0055aa);
+      margin: 15px 0;
+      position: relative;
+    }
+
+    .depth-indicator::after {
+      content: attr(data-depth);
+      position: absolute;
+      right: 0;
+      top: -20px;
+      font-size: 0.8rem;
+      color: var(--aqua);
+    }
+
+    .rarity {
+      display: inline-block;
+      padding: 3px 10px;
+      background-color: rgba(0, 207, 213, 0.2);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--aqua);
+      margin-top: 10px;
+    }
+
+ .bioluminescent-dots {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .dot {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background-color: var(--bioluminescent);
+      opacity: 0.7;
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.7; }
+      100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+    }
+
+    .facts-section {
+      padding: 80px 20px;
+      background: var(--deep-black);
+      position: relative;
+    }
+
+    .facts-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .rare-creatures {
+  padding: 80px 20px;
+  background: var(--deep-black);
+  position: relative;
+}
+
+
+   section {
+  margin-bottom: 100px;
+} 
+
+    .fact-card {
+      background: rgba(0, 34, 62, 0.5);
+      border-radius: 10px;
+      padding: 30px;
+      border-left: 4px solid var(--aqua);
+      transition: transform 0.3s ease;
+    }
+
+    .fact-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .fact-card i {
+      font-size: 2.5rem;
+      color: var(--aqua);
+      margin-bottom: 20px;
+    }
+
+    .fact-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #aee0ff;
+    }
+
+    /* Conservation CTA */
+    .conservation-cta {
+      padding: 100px 20px;
+      text-align: center;
+      background: linear-gradient(rgba(0, 20, 40, 0.9), rgba(0, 20, 40, 0.9)), 
+                  url('https://images.unsplash.com/photo-1587502536575-6dfba0a6e017?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    .cta-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .cta-content p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: var(--text-light);
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 15px 30px;
+      background: transparent;
+      color: var(--aqua);
+      border: 2px solid var(--aqua);
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button:hover {
+      background: var(--aqua);
+      color: var(--dark-blue);
+      box-shadow: 0 0 20px rgba(0, 207, 213, 0.5);
+    }
+
+    /* Fixed Footer */
+    footer {
+      background-color: #010f1c;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+    }
+
+    
+    main {
+      padding-bottom: 70px; 
+    }
+
+   
+    @media (max-width: 1024px) {
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+      
+      .creature-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      nav a {
+        font-size: 0.95rem;
+      }
+
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .section-title h2 {
+        font-size: 2.2rem;
+      }
+      
+      .facts-container {
+        grid-template-columns: 1fr;
+      }
+      
+      footer {
+        padding: 15px;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .creature-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .cta-content h2 {
+        font-size: 2.2rem;
+      }
+      
+      .cta-content p {
+        font-size: 1rem;
+      }
+      
+      .cta-button {
+        padding: 12px 25px;
+        font-size: 1rem;
+      }
+      
+      footer {
+        font-size: 0.7rem;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <h1>Rare Creatures of the Deep</h1>
+        <p>Discover the mysterious and extraordinary life forms that inhabit the ocean's most inaccessible depths</p>
+      </div>
+      <div class="scroll-down">
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="bioluminescent-dots" id="bioluminescent-dots"></div>
+    </section>
+
+    <section class="deep-sea-creatures">
+  <div class="creature-grid">
+    
+    <div class="creature-card">
+      <div class="creature-image">
+        <img src="images/160d6850c7979b5e510e22711192f157.gif" alt="Vampire Squid">
+      </div>
+      <div class="creature-info">
+        <h3>Vampire Squid</h3>
+        <span class="scientific-name">Vampyroteuthis infernalis</span>
+        <p>This "living fossil" inhabits the oxygen minimum zone, using bioluminescence to disorient predators.</p>
+        <div class="depth-indicator" data-depth="900-3,000m"></div>
+        <span class="rarity">Extremely Rare</span>
+      </div>
+    </div>
+
+    <div class="creature-card">
+      <div class="creature-image">
+        <img src="images/0596abef0227bb28f7b75d36b9ebc791.gif" alt="Dumbo Octopus">
+      </div>
+      <div class="creature-info">
+        <h3>Dumbo Octopus</h3>
+        <span class="scientific-name">Grimpoteuthis spp.</span>
+        <p>Named for its ear-like fins, this deep-sea cephalopod is the deepest-living octopus known.</p>
+        <div class="depth-indicator" data-depth="3,000-4,000m"></div>
+        <span class="rarity">Very Rare</span>
+      </div>
+    </div>
+
+    <div class="creature-card">
+      <div class="creature-image">
+        <img src="images/99953ada3e6df018e33b54bc9edb8714.gif" alt="Deep Sea Anglerfish">
+      </div>
+      <div class="creature-info">
+        <h3>Black Seadevil</h3>
+        <span class="scientific-name">Melanocetus johnsonii</span>
+        <p>Females use bioluminescent lures to attract prey in the perpetual darkness of the deep sea.</p>
+        <div class="depth-indicator" data-depth="500-3,000m"></div>
+        <span class="rarity">Rare</span>
+      </div>
+    </div>
+
+    <div class="creature-card">
+      <div class="creature-image">
+        <img src="images/af86f2cf2cd90a952bee8bd3af1e070c.gif" alt="Gulper Eel">
+      </div>
+      <div class="creature-info">
+        <h3>Gulper Eel</h3>
+        <span class="scientific-name">Eurypharynx pelecanoides</span>
+        <p>With its enormous mouth, this eel can swallow prey much larger than itself whole.</p>
+        <div class="depth-indicator" data-depth="500-6,000m"></div>
+        <span class="rarity">Very Rare</span>
+      </div>
+    </div>
+
+    <div class="creature-card">
+      <div class="creature-image">
+        <img src="images/isopod-meme.gif" alt="Giant Isopod">
+      </div>
+      <div class="creature-info">
+        <h3>Giant Isopod</h3>
+        <span class="scientific-name">Bathynomus giganteus</span>
+        <p>These deep-sea crustaceans can survive years without food in their harsh environment.</p>
+        <div class="depth-indicator" data-depth="170-2,140m"></div>
+        <span class="rarity">Uncommon</span>
+      </div>
+    </div>
+
+    <div class="creature-card">
+      <div class="creature-image">
+        <img src="images/d6df230e3514c5c66c5c4a1648e8687e.gif" alt="Glass Squid">
+      </div>
+      <div class="creature-info">
+        <h3>Glass Squid</h3>
+        <span class="scientific-name">Teuthowenia pellucida</span>
+        <p>Nearly transparent with light-producing organs, these squid are masters of camouflage.</p>
+        <div class="depth-indicator" data-depth="500-2,000m"></div>
+        <span class="rarity">Rare</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+    <section class="facts-section">
+      <div class="section-title">
+        <h2>Deep Sea Mysteries</h2>
+        <p>Fascinating facts about the extreme environment these creatures call home</p>
+      </div>
+
+      <div class="facts-container">
+        <div class="fact-card">
+          <i class="fas fa-water"></i>
+          <h3>Pressure Extreme</h3>
+          <p>The pressure in the deepest trenches reaches over 1,000 atmospheres - enough to crush most submarines.</p>
+        </div>
+
+        <div class="fact-card">
+          <i class="fas fa-moon"></i>
+          <h3>Perpetual Darkness</h3>
+          <p>Below 1,000 meters, sunlight disappears completely, creating a world of eternal night.</p>
+        </div>
+
+        <div class="fact-card">
+          <i class="fas fa-fire"></i>
+          <h3>Cold as Ice</h3>
+          <p>Temperatures hover just above freezing, between 1-4°C (34-39°F) in most deep ocean zones.</p>
+        </div>
+
+        <div class="fact-card">
+          <i class="fas fa-clock"></i>
+          <h3>Slow Metabolism</h3>
+          <p>Many deep-sea creatures live extremely long lives with very slow metabolisms to conserve energy.</p>
+        </div>
+
+        <div class="fact-card">
+          <i class="fas fa-lightbulb"></i>
+          <h3>Bioluminescence</h3>
+          <p>90% of deep-sea creatures produce light, the most common form of communication in the dark.</p>
+        </div>
+
+        <div class="fact-card">
+          <i class="fas fa-map"></i>
+          <h3>Unexplored Frontier</h3>
+          <p>More than 80% of our ocean remains unmapped, unobserved, and unexplored.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="conservation-cta">
+      <div class="cta-content">
+        <h2>Protect the Deep</h2>
+        <p>These rare creatures and their fragile habitats face threats from deep-sea mining, pollution, and climate change. Learn how you can help preserve these mysterious ecosystems for future generations.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    // Create bioluminescent dots
+    function createBioluminescentDots() {
+      const container = document.getElementById('bioluminescent-dots');
+      const dotCount = 50;
+      
+      for (let i = 0; i < dotCount; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        
+        // Random position
+        dot.style.left = `${Math.random() * 100}%`;
+        dot.style.top = `${Math.random() * 100}%`;
+        
+        // Random size
+        const size = 2 + Math.random() * 3;
+        dot.style.width = `${size}px`;
+        dot.style.height = `${size}px`;
+        
+        // Random animation duration
+        dot.style.animationDuration = `${10 + Math.random() * 20}s`;
+        dot.style.animationDelay = `${Math.random() * 5}s`;
+        
+        container.appendChild(dot);
+      }
+    }
+    
+    // Initialize when page loads
+    window.addEventListener('load', createBioluminescentDots);
+    
+    // Smooth scroll for the page
+    document.querySelector('.scroll-down').addEventListener('click', () => {
+      window.scrollBy({
+        top: window.innerHeight - 100,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>

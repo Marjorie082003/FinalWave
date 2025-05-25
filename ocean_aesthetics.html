@@ -1,0 +1,1510 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Endless Horizons| Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;500;600&family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --deep-blue: #00203f;
+      --ocean-teal: #008793;
+      --jellyfish-purple: #a239ca;
+      --coral-pink: #ff7b89;
+      --bioluminescent-blue: #00e1ff;
+      --text-light: #f0f8ff;
+      --text-muted: #b8e2f8;
+      --wave-color: rgba(0, 225, 255, 0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to bottom, #000b18, #001a33);
+      color: var(--text-light);
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Navigation (kept as requested) */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    nav a.active {
+      color: var(--bioluminescent-blue);
+      font-weight: 600;
+    }
+
+    nav a.active::after {
+      width: 100%;
+    }
+
+    nav a:hover {
+      color: var(--bioluminescent-blue);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--bioluminescent-blue);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Ocean Waves Animation */
+    .ocean-waves {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%2300e1ff" opacity=".1"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%2300e1ff" opacity=".2"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%2300e1ff" opacity=".3"/></svg>');
+      background-size: cover;
+      z-index: -1;
+      animation: waveAnimation 15s linear infinite;
+    }
+
+    @keyframes waveAnimation {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 1200px; }
+    }
+
+    /* Bubble Background */
+    .bubbles {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      background: rgba(0, 225, 255, 0.1);
+      border-radius: 50%;
+      animation: rise 15s infinite ease-in;
+    }
+
+    .bubble:nth-child(1) {
+      width: 40px;
+      height: 40px;
+      left: 10%;
+      animation-duration: 8s;
+    }
+
+    .bubble:nth-child(2) {
+      width: 20px;
+      height: 20px;
+      left: 20%;
+      animation-duration: 5s;
+      animation-delay: 1s;
+    }
+
+    .bubble:nth-child(3) {
+      width: 50px;
+      height: 50px;
+      left: 35%;
+      animation-duration: 7s;
+      animation-delay: 2s;
+    }
+
+    .bubble:nth-child(4) {
+      width: 80px;
+      height: 80px;
+      left: 50%;
+      animation-duration: 11s;
+      animation-delay: 0s;
+    }
+
+    .bubble:nth-child(5) {
+      width: 35px;
+      height: 35px;
+      left: 55%;
+      animation-duration: 6s;
+      animation-delay: 1s;
+    }
+
+    .bubble:nth-child(6) {
+      width: 45px;
+      height: 45px;
+      left: 65%;
+      animation-duration: 8s;
+      animation-delay: 3s;
+    }
+
+    .bubble:nth-child(7) {
+      width: 25px;
+      height: 25px;
+      left: 75%;
+      animation-duration: 7s;
+      animation-delay: 2s;
+    }
+
+    .bubble:nth-child(8) {
+      width: 80px;
+      height: 80px;
+      left: 80%;
+      animation-duration: 6s;
+      animation-delay: 1s;
+    }
+
+    @keyframes rise {
+      0% {
+        bottom: -100px;
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(100px);
+      }
+      100% {
+        bottom: 1080px;
+        transform: translateX(-200px);
+      }
+    }
+
+    /* Hero Section - Enhanced */
+    .invertebrates-hero {
+      position: relative;
+      height: 90vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at bottom, #001a33 0%, #000000 100%);
+      isolation: isolate;
+    }
+
+    .hero-content {
+      text-align: center;
+      z-index: 3;
+      padding: 20px;
+      max-width: 800px;
+      position: relative;
+    }
+
+    .hero-content h1 {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      margin-bottom: 20px;
+      background: linear-gradient(to right, #fff, var(--bioluminescent-blue));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 20px rgba(0, 225, 255, 0.3);
+      line-height: 1.2;
+      letter-spacing: 1px;
+    }
+
+    .hero-content p {
+      font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+      margin-bottom: 30px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .explore-btn {
+      display: inline-block;
+      padding: 15px 30px;
+      background: linear-gradient(45deg, var(--ocean-teal), var(--bioluminescent-blue));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 225, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .explore-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 225, 255, 0.4);
+    }
+
+    .explore-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .explore-btn:hover::before {
+      left: 100%;
+    }
+
+    /* Jellyfish Animation - Enhanced */
+    .jellyfish-animation {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .jellyfish {
+      position: absolute;
+      width: 120px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(162, 57, 202, 0.6) 0%, rgba(162, 57, 202, 0) 70%);
+      border-radius: 50% 50% 0 0;
+      filter: blur(20px);
+      animation: float 15s infinite ease-in-out;
+      opacity: 0.8;
+    }
+
+    .jellyfish::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100px;
+      background: linear-gradient(to bottom, rgba(162, 57, 202, 0.8), transparent);
+    }
+
+    .jellyfish:nth-child(2) {
+      width: 100px;
+      height: 150px;
+      left: 30%;
+      top: 20%;
+      animation-delay: 3s;
+      animation-duration: 18s;
+      background: radial-gradient(circle, rgba(0, 225, 255, 0.6) 0%, rgba(0, 225, 255, 0) 70%);
+    }
+
+    .jellyfish:nth-child(2)::after {
+      background: linear-gradient(to bottom, rgba(0, 225, 255, 0.8), transparent);
+    }
+
+    .jellyfish:nth-child(3) {
+      width: 80px;
+      height: 130px;
+      left: 70%;
+      top: 40%;
+      animation-delay: 6s;
+      animation-duration: 12s;
+      background: radial-gradient(circle, rgba(255, 123, 137, 0.5) 0%, rgba(255, 123, 137, 0) 70%);
+    }
+
+    .jellyfish:nth-child(3)::after {
+      background: linear-gradient(to bottom, rgba(255, 123, 137, 0.8), transparent);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0) rotate(0deg); }
+      25% { transform: translateY(-50px) translateX(20px) rotate(5deg); }
+      50% { transform: translateY(-100px) translateX(50px) rotate(0deg); }
+      75% { transform: translateY(-50px) translateX(30px) rotate(-5deg); }
+      100% { transform: translateY(0) translateX(0) rotate(0deg); }
+    }
+
+    /* Section Divider */
+    .section-divider {
+      position: relative;
+      height: 150px;
+      overflow: hidden;
+      background: linear-gradient(to bottom, var(--deep-blue), #000b18);
+    }
+
+    .section-divider svg {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Invertebrates Grid - Enhanced */
+    .invertebrates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 40px;
+      padding: 80px 20px;
+      max-width: 1300px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .section-header {
+      grid-column: 1 / -1;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section-header h2 {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--bioluminescent-blue);
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-header h2::after {
+      content: '';
+      position: absolute;
+      width: 60%;
+      height: 3px;
+      bottom: -10px;
+      left: 20%;
+      background: linear-gradient(to right, transparent, var(--bioluminescent-blue), transparent);
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+    }
+
+    .invertebrate-card {
+      background: rgba(0, 42, 82, 0.3);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      border: 1px solid rgba(0, 225, 255, 0.1);
+      backdrop-filter: blur(5px);
+    }
+
+    .invertebrate-card:hover {
+      transform: translateY(-15px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 100, 200, 0.4);
+      border-color: rgba(0, 225, 255, 0.4);
+    }
+
+    .invertebrate-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--jellyfish-purple), var(--bioluminescent-blue), var(--coral-pink));
+      z-index: 2;
+    }
+
+    .invertebrate-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at center, rgba(0, 225, 255, 0.1), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+    }
+
+    .invertebrate-card:hover::after {
+      opacity: 1;
+    }
+
+    .invertebrate-img-container {
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .invertebrate-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .invertebrate-card:hover .invertebrate-img {
+      transform: scale(1.1);
+    }
+
+    .invertebrate-info {
+      padding: 25px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .invertebrate-info h3 {
+      font-family: 'Merriweather', serif;
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+      color: var(--bioluminescent-blue);
+      position: relative;
+      display: inline-block;
+    }
+
+    .invertebrate-info h3::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background: linear-gradient(to right, var(--jellyfish-purple), transparent);
+    }
+
+    .invertebrate-info p {
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      font-size: 1rem;
+      min-height: 80px;
+    }
+
+    .invertebrate-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background: rgba(0, 225, 255, 0.1);
+      padding: 8px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 225, 255, 0.2);
+    }
+
+    .stat i {
+      color: var(--bioluminescent-blue);
+      font-size: 1rem;
+    }
+
+    /* Bioluminescent Section - Enhanced */
+    .bioluminescent-section {
+      background: linear-gradient(to bottom, #000b18, #001a33);
+      padding: 100px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .bioluminescent-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 225, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(162, 57, 202, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 20%, rgba(255, 123, 137, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .bioluminescent-section .section-title {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin-bottom: 50px;
+      position: relative;
+      display: inline-block;
+      color: var(--bioluminescent-blue);
+      text-shadow: 0 0 20px rgba(0, 225, 255, 0.3);
+    }
+
+    .bioluminescent-section .section-title::after {
+      content: '';
+      position: absolute;
+      width: 60%;
+      height: 3px;
+      bottom: -15px;
+      left: 20%;
+      background: linear-gradient(to right, transparent, var(--bioluminescent-blue), transparent);
+    }
+
+    .bioluminescent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .bioluminescent-card {
+      background: rgba(0, 42, 82, 0.3);
+      border-radius: 15px;
+      padding: 30px;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(0, 225, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .bioluminescent-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 15px 30px rgba(0, 100, 200, 0.3);
+      border-color: rgba(0, 225, 255, 0.4);
+    }
+
+    .bioluminescent-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(0, 225, 255, 0.1),
+        transparent 50%
+      );
+      transform: rotate(30deg);
+      transition: all 0.7s;
+      z-index: 0;
+    }
+
+    .bioluminescent-card:hover::before {
+      left: 100%;
+    }
+
+    .bioluminescent-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: var(--bioluminescent-blue);
+      position: relative;
+      z-index: 1;
+      font-family: 'Merriweather', serif;
+    }
+
+    .bioluminescent-card p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      position: relative;
+      z-index: 1;
+      line-height: 1.7;
+    }
+
+    .bioluminescent-icon {
+      font-size: 2.5rem;
+      color: var(--bioluminescent-blue);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 15px rgba(0, 225, 255, 0.5);
+      transition: transform 0.3s ease;
+    }
+
+    .bioluminescent-card:hover .bioluminescent-icon {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    /* Deep Sea Section - Enhanced */
+    .deep-sea-section {
+      background: url('images/jellyfish-275576.jpg') no-repeat center center;
+      background-size: cover;
+      padding: 150px 20px;
+      text-align: center;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .deep-sea-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 11, 24, 0.9), rgba(0, 30, 60, 0.8));
+      z-index: 1;
+    }
+
+    .deep-sea-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .deep-sea-content h2 {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin-bottom: 40px;
+      color: var(--bioluminescent-blue);
+      text-shadow: 0 0 20px rgba(10, 59, 102, 0.3);
+    }
+
+    .deep-sea-content p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      line-height: 1.8;
+    }
+
+    /* Interactive Element - Enhanced */
+    .interactive-container {
+      max-width: 900px;
+      margin: 100px auto;
+      padding: 0 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .interactive-title {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 40px;
+      color: var(--bioluminescent-blue);
+      text-shadow: 0 0 15px rgba(0, 225, 255, 0.2);
+    }
+
+    .interactive-container p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .slider-container {
+      position: relative;
+      margin: 40px 0;
+      padding: 20px 0;
+    }
+
+    .depth-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 12px;
+      background: linear-gradient(to right, #005f73, #0a1128);
+      border-radius: 10px;
+      outline: none;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(0, 225, 255, 0.2);
+    }
+
+    .depth-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--bioluminescent-blue);
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0, 225, 255, 0.8);
+      border: 2px solid white;
+      transition: transform 0.2s ease;
+    }
+
+    .depth-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    .depth-display {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    #currentDepth {
+      color: var(--bioluminescent-blue);
+      font-weight: bold;
+      font-size: 1.3rem;
+    }
+
+    #currentCreature {
+      color: var(--bioluminescent-blue);
+      font-weight: bold;
+      margin-left: 10px;
+      font-size: 1.2rem;
+    }
+
+    .depth-zones {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0 40px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      position: relative;
+    }
+
+    .depth-zones::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(0, 225, 255, 0.5), transparent);
+    }
+
+    .creature-display {
+      margin-top: 40px;
+      background: rgba(0, 42, 82, 0.4);
+      border-radius: 15px;
+      padding: 30px;
+      display: none;
+      border: 1px solid rgba(0, 225, 255, 0.2);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      text-align: left;
+      transition: all 0.5s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .creature-display.show {
+      display: block;
+      animation: fadeInUp 0.5s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .creature-info {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .creature-info img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 3px solid var(--bioluminescent-blue);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .creature-info img:hover {
+      transform: scale(1.05);
+    }
+
+    .creature-text h3 {
+      font-family: 'Merriweather', serif;
+      font-size: 1.8rem;
+      color: var(--bioluminescent-blue);
+      margin-bottom: 10px;
+    }
+
+    .creature-text p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+
+    .creature-text .depth-info {
+      display: inline-block;
+      background: rgba(0, 225, 255, 0.1);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: var(--bioluminescent-blue);
+      border: 1px solid rgba(0, 225, 255, 0.3);
+    }
+
+    /* Footer (kept as requested) */
+    footer {
+      background-color: #010f1c;
+      padding: 30px 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(0, 225, 255, 0.5), transparent);
+    }
+
+    /* Floating Particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      background: rgba(0, 225, 255, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      nav {
+        gap: 20px;
+        padding: 15px;
+      }
+
+      .invertebrates-hero {
+        height: 80vh;
+      }
+
+      .invertebrates-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+      }
+
+      .bioluminescent-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+
+      .depth-zones {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .creature-info {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .creature-info img {
+        margin-bottom: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav {
+        gap: 15px;
+        padding: 10px;
+        flex-wrap: wrap;
+      }
+
+      .invertebrates-hero {
+        height: 70vh;
+      }
+
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-content p {
+        font-size: 1.1rem;
+      }
+
+      .invertebrate-card {
+        width: 100%;
+      }
+
+      .bioluminescent-card {
+        padding: 20px;
+      }
+    }
+
+    /* Special Surprise - Hidden Easter Egg */
+    .easter-egg {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: rgba(0, 225, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 225, 255, 0.4);
+    }
+
+    .easter-egg:hover {
+      background: rgba(0, 225, 255, 0.3);
+      transform: scale(1.1);
+    }
+
+    .easter-egg i {
+      color: var(--bioluminescent-blue);
+      font-size: 1.5rem;
+    }
+
+    .whale-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+      display: none;
+    }
+
+    .whale {
+      position: absolute;
+      width: 300px;
+      height: 150px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 256"><path d="M496,128c0,70.7-57.3,128-128,128H44c-24.3,0-44-19.7-44-44V44C0,19.7,19.7,0,44,0h324C438.7,0,496,57.3,496,128z" fill="%2300e1ff" opacity="0.2"/></svg>') no-repeat;
+      background-size: contain;
+      animation: whaleSwim 15s linear infinite;
+    }
+
+    @keyframes whaleSwim {
+      0% { transform: translateX(-300px) translateY(50vh); }
+      50% { transform: translateX(50vw) translateY(30vh); }
+      100% { transform: translateX(100vw) translateY(50vh); }
+    }
+
+    .bubble-burst {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: bubbleBurst 1s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes bubbleBurst {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(20); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Ocean Background Elements -->
+  <div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+  
+  <div class="particles" id="particles"></div>
+  <div class="ocean-waves"></div>
+  
+  <!-- Easter Egg Trigger -->
+  <div class="easter-egg" id="easterEgg">
+    <i class="fas fa-fish"></i>
+  </div>
+  
+  <!-- Whale Animation (Hidden) -->
+  <div class="whale-container" id="whaleContainer">
+    <div class="whale"></div>
+  </div>
+
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+
+    
+    <a href="javascript:void(0)" id="logout-btn" style="display: none; color: #fff;" onclick="logout()">Logout</a>
+    <a href="javascript:void(0)" id="login-btn" style="color: #fff;" onclick="showAuthModal('login')">Login</a>
+  </nav>
+
+  <section class="invertebrates-hero">
+    <div class="jellyfish-animation">
+      <div class="jellyfish" style="left: 10%; top: 30%;"></div>
+      <div class="jellyfish"></div>
+      <div class="jellyfish"></div>
+    </div>
+    <div class="hero-content">
+      <h1>Endless Horizons</h1>
+      <p>Discover the fascinating world of spineless wonders that dominate marine ecosystems, from glowing jellyfish to intelligent octopuses.</p>
+      <button class="explore-btn" id="exploreBtn">Dive Deeper</button>
+    </div>
+  </section>
+
+  <div class="section-divider">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="currentColor"></path>
+      <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="currentColor"></path>
+      <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="currentColor"></path>
+    </svg>
+  </div>
+
+  <section class="invertebrates-grid">
+    <div class="section-header">
+      <h2>Stunning Ocean Photography</h2>
+      <p>Discover the captivating beauty of the ocean through breathtaking images of marine life and seascapes.
+      </p>
+    </div>
+    
+    <div class="invertebrate-card">
+      <div class="invertebrate-img-container">
+        <img src="images/jellyfish-969927.jpg" alt="Jellyfish" class="invertebrate-img">
+      </div>
+      <div class="invertebrate-info">
+        <h3>Jellyfish</h3>
+        <p>Ancient drifters with stinging tentacles that have existed for over 500 million years, surviving multiple mass extinctions.</p>
+        <div class="invertebrate-stats">
+          <div class="stat"><i class="fas fa-ruler"></i> Up to 2m</div>
+          <div class="stat"><i class="fas fa-tint"></i> 95% Water</div>
+          <div class="stat"><i class="fas fa-clock"></i> 500M Years</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="invertebrate-card">
+      <div class="invertebrate-img-container">
+        <img src="images/0544442fe8b9f7662a7308f364ac1131.jpg" alt="Octopus" class="invertebrate-img">
+      </div>
+      <div class="invertebrate-info">
+        <h3>Octopus</h3>
+        <p>Highly intelligent cephalopods with eight arms, three hearts, blue blood, and the ability to solve complex puzzles.</p>
+        <div class="invertebrate-stats">
+          <div class="stat"><i class="fas fa-brain"></i> Highly Intelligent</div>
+          <div class="stat"><i class="fas fa-eye"></i> Colorblind Vision</div>
+          <div class="stat"><i class="fas fa-heart"></i> 3 Hearts</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="invertebrate-card">
+      <div class="invertebrate-img-container">
+        <img src="images/coral-polyp (2).jpg" alt="Coral" class="invertebrate-img">
+      </div>
+      <div class="invertebrate-info">
+        <h3>Coral Polyps</h3>
+        <p>Tiny animals that build massive reef structures supporting 25% of marine life through symbiotic relationships with algae.</p>
+        <div class="invertebrate-stats">
+          <div class="stat"><i class="fas fa-clock"></i> 400M Years</div>
+          <div class="stat"><i class="fas fa-home"></i> Reef Builders</div>
+          <div class="stat"><i class="fas fa-users"></i> Symbiotic</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="invertebrate-card">
+      <div class="invertebrate-img-container">
+        <img src="images/starfish-604234.jpg" alt="Starfish" class="invertebrate-img">
+      </div>
+      <div class="invertebrate-info">
+        <h3>Starfish</h3>
+        <p>Echinoderms with remarkable regeneration abilities, hydraulic tube feet, and a unique water vascular system.</p>
+        <div class="invertebrate-stats">
+          <div class="stat"><i class="fas fa-magic"></i> Regeneration</div>
+          <div class="stat"><i class="fas fa-arrows-alt"></i> 5-40 Arms</div>
+          <div class="stat"><i class="fas fa-water"></i> Hydraulic</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="invertebrate-card">
+      <div class="invertebrate-img-container">
+        <img src="images/water-4505955.jpg" alt="Sea Urchin" class="invertebrate-img">
+      </div>
+      <div class="invertebrate-info">
+        <h3>Sea Urchin</h3>
+        <p>Spiny globular creatures that graze on algae with a complex chewing apparatus called Aristotle's lantern.</p>
+        <div class="invertebrate-stats">
+          <div class="stat"><i class="fas fa-spinner"></i> 5-fold Symmetry</div>
+          <div class="stat"><i class="fas fa-clock"></i> 450M Years</div>
+          <div class="stat"><i class="fas fa-utensils"></i> Herbivores</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="invertebrate-card">
+      <div class="invertebrate-img-container">
+        <img src="images/280ac01a8785b044fa355ca71ca3f70f.jpg" alt="Giant Squid" class="invertebrate-img">
+      </div>
+      <div class="invertebrate-info">
+        <h3>Giant Squid</h3>
+        <p>Elusive deep-sea creatures with eyes the size of dinner plates, powerful tentacles, and the largest eyes in the animal kingdom.</p>
+        <div class="invertebrate-stats">
+          <div class="stat"><i class="fas fa-ruler"></i> Up to 13m</div>
+          <div class="stat"><i class="fas fa-eye"></i> Largest Eyes</div>
+          <div class="stat"><i class="fas fa-water"></i> Deep Sea</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bioluminescent-section">
+    <h2 class="section-title">Bioluminescent Wonders</h2>
+    <div class="bioluminescent-grid">
+      <div class="bioluminescent-card">
+        <div class="bioluminescent-icon"><i class="fas fa-fire"></i></div>
+        <h3>Chemical Light</h3>
+        <p>90% of deep-sea creatures produce light through chemical reactions between luciferin and oxygen, creating stunning underwater light shows.</p>
+      </div>
+      <div class="bioluminescent-card">
+        <div class="bioluminescent-icon"><i class="fas fa-fish"></i></div>
+        <h3>Vampire Squid</h3>
+        <p>This deep-sea cephalopod ejects bioluminescent mucus to confuse predators in the midnight zone, creating a dazzling distraction.</p>
+      </div>
+      <div class="bioluminescent-card">
+        <div class="bioluminescent-icon"><i class="fas fa-moon"></i></div>
+        <h3>Counterillumination</h3>
+        <p>Many species match downwelling light to become invisible from below, using photophores to blend with the dim surface light.</p>
+      </div>
+      <div class="bioluminescent-card">
+        <div class="bioluminescent-icon"><i class="fas fa-heart"></i></div>
+        <h3>Mating Signals</h3>
+        <p>Fireworms use coordinated bioluminescence to find mates during spectacular spawning events that light up entire reefs.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="deep-sea-section">
+    <div class="deep-sea-content">
+      <h2>Masters of the Deep</h2>
+      <p>Invertebrates dominate the ocean's most extreme environments, from hydrothermal vents to the abyssal plain. These resilient creatures have evolved extraordinary adaptations to survive crushing pressures, freezing temperatures, and complete darkness.</p>
+      <p>Many deep-sea invertebrates exhibit gigantism, with species like the Japanese spider crab reaching 3.7m across, or live for centuries like the 500-year-old Greenland shark. Some hydrothermal vent worms thrive in water hot enough to melt lead, while others survive complete darkness by cultivating symbiotic bacteria.</p>
+    </div>
+  </section>
+
+  <div class="interactive-container">
+    <h2 class="interactive-title">Explore Ocean Depths</h2>
+    <p>Drag the slider to discover which incredible invertebrates live at different ocean depths, from sunlit surfaces to the mysterious abyss.</p>
+    
+    <div class="slider-container">
+      <input type="range" min="0" max="6000" value="0" class="depth-slider" id="depthSlider">
+      <div class="depth-display">
+        <span>Current Depth: <span id="currentDepth">0</span> meters</span>
+        <span id="currentCreature">(Drag to discover creatures)</span>
+      </div>
+    </div>
+    
+    <div class="depth-zones">
+      <span>Sunlight (0-200m)</span>
+      <span>Twilight (200-1000m)</span>
+      <span>Midnight (1000-4000m)</span>
+      <span>Abyss (4000-6000m)</span>
+    </div>
+    
+    <div class="creature-display" id="creatureDisplay">
+      <div class="creature-info">
+        <img id="creatureImage" src="" alt="">
+        <div class="creature-text">
+          <h3 id="creatureName"></h3>
+          <p id="creatureDescription"></p>
+          <span class="depth-info" id="creatureDepth"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Beneath the Waves. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Enhanced Creature Data
+    const creatureData = [
+      {
+        name: "Moon Jellyfish",
+        depth: "0-200m (Sunlight Zone)",
+        description: "Common jellyfish found near the surface with translucent bell and short tentacles. They pulse rhythmically to move through the water, feeding on plankton and small fish.",
+        image: "images/61f4c4a5eaf9826fe455710784ae5752.jpg",
+        minDepth: 0,
+        maxDepth: 200,
+        funFact: "Moon jellyfish have existed virtually unchanged for over 500 million years!"
+      },
+      {
+        name: "Coral Polyps",
+        depth: "0-40m (Sunlight Zone)",
+        description: "Tiny animals that build massive reef structures in shallow, sunlit waters through symbiotic relationships with photosynthetic algae called zooxanthellae.",
+        image: "images/coral-polyp (2).jpg",
+        minDepth: 0,
+        maxDepth: 40,
+        funFact: "The Great Barrier Reef is visible from space and is the largest living structure on Earth."
+      },
+      {
+        name: "Common Octopus",
+        depth: "0-200m (Sunlight Zone)",
+        description: "Highly intelligent cephalopod that inhabits rocky seabeds in coastal waters. Capable of complex problem-solving, tool use, and rapid color changes for camouflage.",
+        image: "images/b0253cfb73e443b84210e0a6989feb6d.jpg",
+        minDepth: 0,
+        maxDepth: 200,
+        funFact: "Octopuses have three hearts and blue blood due to copper-based hemocyanin."
+      },
+      {
+        name: "Vampire Squid",
+        depth: "600-900m (Twilight Zone)",
+        description: "Deep-sea cephalopod that ejects bioluminescent mucus to confuse predators. Despite its name, it feeds on marine snow rather than blood.",
+        image: "images/37e9ae70f7f988ce041a6f0671b7c3ac.jpg",
+        minDepth: 600,
+        maxDepth: 900,
+        funFact: "The vampire squid can turn itself inside out to protect itself with spiny projections."
+      },
+      {
+        name: "Giant Squid",
+        depth: "300-1000m (Twilight Zone)",
+        description: "Elusive deep-sea creature with eyes the size of dinner plates and powerful tentacles. One of the largest invertebrates, reaching up to 13 meters in length.",
+        image: "images/280ac01a8785b044fa355ca71ca3f70f.jpg",
+        minDepth: 300,
+        maxDepth: 1000,
+        funFact: "Giant squid were considered mythical until the first photographs of a live specimen in 2004."
+      },
+      {
+        name: "Deep-sea Urchin",
+        depth: "2500-5000m (Abyssal Zone)",
+        description: "Pressure-resistant urchins that scavenge on falling organic matter in the deep ocean. They move slowly across the seafloor using tube feet.",
+        image: "images/c9f1c5221b267c3a8f297ee5c5262ace.jpg",
+        minDepth: 2500,
+        maxDepth: 5000,
+        funFact: "Some deep-sea urchins can live for over 100 years in the cold, dark depths."
+      },
+      {
+        name: "Yeti Crab",
+        depth: "2200-2500m (Hydrothermal Vents)",
+        description: "Furry-looking crab that farms bacteria on its claws near deep-sea hydrothermal vents. Discovered in 2005 in the South Pacific.",
+        image: "images/1c2ccdd4aef37420124ef950e6f4be10.jpg",
+        minDepth: 2200,
+        maxDepth: 2500,
+        funFact: "The yeti crab waves its hairy claws in vent fluids to cultivate its bacterial food source."
+      }
+    ];
+
+    // Interactive Depth Slider
+    const depthSlider = document.getElementById('depthSlider');
+    const currentDepthDisplay = document.getElementById('currentDepth');
+    const currentCreatureDisplay = document.getElementById('currentCreature');
+    const creatureDisplay = document.getElementById('creatureDisplay');
+    const creatureImage = document.getElementById('creatureImage');
+    const creatureName = document.getElementById('creatureName');
+    const creatureDescription = document.getElementById('creatureDescription');
+    const creatureDepth = document.getElementById('creatureDepth');
+
+    depthSlider.addEventListener('input', function() {
+      const depthValue = parseInt(this.value);
+      currentDepthDisplay.textContent = depthValue;
+      
+      // Find creatures in this depth range
+      const foundCreatures = creatureData.filter(creature => 
+        depthValue >= creature.minDepth && depthValue <= creature.maxDepth
+      );
+      
+      if (foundCreatures.length > 0) {
+        const creature = foundCreatures[0]; // Show first matching creature
+        currentCreatureDisplay.textContent = `${creature.name}`;
+        
+        // Show detailed creature info with animation
+        creatureDisplay.classList.remove('show');
+        setTimeout(() => {
+          creatureImage.src = creature.image;
+          creatureImage.alt = creature.name;
+          creatureName.textContent = creature.name;
+          creatureDescription.textContent = creature.description;
+          creatureDepth.textContent = `Depth: ${creature.depth} • ${creature.funFact}`;
+          creatureDisplay.classList.add('show');
+        }, 300);
+      } else {
+        currentCreatureDisplay.textContent = "(Exploring unknown depths)";
+        creatureDisplay.classList.remove('show');
+      }
+    });
+
+    // Create floating particles
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 50;
+
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      
+      // Random properties
+      const size = Math.random() * 5 + 1;
+      const posX = Math.random() * 100;
+      const posY = Math.random() * 100;
+      const delay = Math.random() * 10;
+      const duration = Math.random() * 20 + 10;
+      const opacity = Math.random() * 0.5 + 0.1;
+      
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${posX}%`;
+      particle.style.top = `${posY}%`;
+      particle.style.opacity = opacity;
+      particle.style.animationDelay = `${delay}s`;
+      particle.style.animationDuration = `${duration}s`;
+      
+      particlesContainer.appendChild(particle);
+    }
+
+    // Easter Egg - Whale Animation
+    const easterEgg = document.getElementById('easterEgg');
+    const whaleContainer = document.getElementById('whaleContainer');
+    let eggClicked = false;
+
+    easterEgg.addEventListener('click', function() {
+      if (!eggClicked) {
+        eggClicked = true;
+        whaleContainer.style.display = 'block';
+        
+        // Create bubble burst effect
+        for (let i = 0; i < 20; i++) {
+          createBubbleBurst(easterEgg);
+        }
+        
+        setTimeout(() => {
+          whaleContainer.style.display = 'none';
+          eggClicked = false;
+        }, 15000);
+      }
+    });
+
+    function createBubbleBurst(element) {
+      const bubble = document.createElement('div');
+      bubble.classList.add('bubble-burst');
+      
+      const rect = element.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      
+      bubble.style.left = `${x}px`;
+      bubble.style.top = `${y}px`;
+      
+      document.body.appendChild(bubble);
+      
+      setTimeout(() => {
+        bubble.remove();
+      }, 1000);
+    }
+
+    // Explore button effect
+    const exploreBtn = document.getElementById('exploreBtn');
+    exploreBtn.addEventListener('click', function() {
+      // Scroll to interactive section with smooth behavior
+      document.querySelector('.interactive-container').scrollIntoView({
+        behavior: 'smooth'
+      });
+      
+      // Create bubble effect
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+          createBubbleBurst(exploreBtn);
+        }, i * 100);
+      }
+    });
+
+    // Navigation and Auth functions
+    function checkLogin() {
+      const loggedIn = localStorage.getItem('loggedIn') === 'true';
+      if (loggedIn) {
+        document.getElementById('logout-btn').style.display = 'block';
+        document.getElementById('login-btn').style.display = 'none';
+      } else {
+        document.getElementById('logout-btn').style.display = 'none';
+        document.getElementById('login-btn').style.display = 'block';
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('loggedIn');
+      checkLogin();
+      window.location.href = "index.html"; 
+    }
+
+    function showAuthModal(formType) {
+      // Your auth modal implementation
+      alert("Login functionality would appear here");
+    }
+
+    // Protected links functionality
+    const protectedLinks = document.querySelectorAll('.protected-link');
+    protectedLinks.forEach(link => {
+      link.addEventListener('click', function(e) {  
+        if (localStorage.getItem('loggedIn') !== 'true') {
+          e.preventDefault();
+          showAuthModal('login');
+        }
+      });
+    });
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      checkLogin();
+      currentDepthDisplay.textContent = "0";
+      currentCreatureDisplay.textContent = "(Drag to discover creatures)";
+      
+      // Animate stats on scroll
+      const animateOnScroll = () => {
+        const stats = document.querySelectorAll('.stat');
+        stats.forEach((stat, index) => {
+          setTimeout(() => {
+            stat.style.transform = 'translateY(0)';
+            stat.style.opacity = '1';
+          }, index * 100);
+        });
+      };
+      
+      // Intersection Observer for scroll animations
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateOnScroll();
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      document.querySelectorAll('.invertebrate-card').forEach(card => {
+        observer.observe(card);
+      });
+    });
+  </script>
+</body>
+</html>

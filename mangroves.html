@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mangrove Ecosystems - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --mangrove-dark: #1a3b2d;
+      --mangrove-medium: #2a5c4a;
+      --mangrove-light: #3c7d64;
+      --water-deep: #0a2e4a;
+      --water-shallow: #1a6fc9;
+      --accent-gold: #d4af37;
+      --text-light: #f0f8ff;
+      --text-muted: #b8c7d8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #060705;
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: #87cefa;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      min-height: 600px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7)), 
+                  url('images/FKNMS-RedMangroves-OliviaWilliamson-.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 10%;
+      color: white;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      z-index: 2;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      font-weight: 300;
+      max-width: 600px;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: var(--accent-gold);
+      color: var(--mangrove-dark);
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .hero-cta:hover {
+      background-color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Scientific Overview */
+    .overview {
+      padding: 80px 10%;
+      background-color: white;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      color: var(--mangrove-dark);
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--accent-gold);
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+    }
+
+    .overview-card {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .overview-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .overview-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .overview-text {
+      padding: 25px;
+    }
+
+    .overview-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: var(--mangrove-medium);
+    }
+
+    .overview-text p {
+      margin-bottom: 15px;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .overview-stats {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .stat-item {
+      text-align: center;
+      flex: 1;
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--mangrove-medium);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: #777;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Ecological Importance */
+    .importance {
+      padding: 80px 10%;
+      background-color: #f5f7fa;
+    }
+
+    .importance-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .importance-image {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .importance-list {
+      list-style-type: none;
+    }
+
+    .importance-item {
+      margin-bottom: 30px;
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .importance-item::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      background-color: var(--accent-gold);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .importance-item h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: var(--mangrove-dark);
+    }
+
+    .importance-item p {
+      color: #555;
+      line-height: 1.7;
+    }
+
+    /* Research Section */
+    .research {
+      padding: 80px 10%;
+      background-color: white;
+    }
+
+    .research-tabs {
+      display: flex;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .research-tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #777;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+    }
+
+    .research-tab.active {
+      color: var(--mangrove-dark);
+      border-bottom: 3px solid var(--accent-gold);
+    }
+
+    .research-tab:hover:not(.active) {
+      color: var(--mangrove-medium);
+    }
+
+    .research-content {
+      display: none;
+    }
+
+    .research-content.active {
+      display: block;
+    }
+
+    .research-paper {
+      margin-bottom: 30px;
+      padding: 25px;
+      background-color: #f9f9f9;
+      border-left: 4px solid var(--accent-gold);
+      transition: all 0.3s ease;
+    }
+
+    .research-paper:hover {
+      background-color: #f1f1f1;
+    }
+
+    .paper-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: var(--mangrove-dark);
+    }
+
+    .paper-authors {
+      font-style: italic;
+      color: #777;
+      margin-bottom: 10px;
+    }
+
+    .paper-abstract {
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 15px;
+    }
+
+    .paper-link {
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .paper-link::after {
+      content: '→';
+      margin-left: 5px;
+      transition: transform 0.3s ease;
+    }
+
+    .paper-link:hover::after {
+      transform: translateX(3px);
+    }
+
+    /* Threats Section */
+    .threats {
+      padding: 80px 10%;
+      background-color: var(--mangrove-dark);
+      color: white;
+    }
+
+    .threats .section-title {
+      color: white;
+    }
+
+    .threats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .threat-card {
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .threat-card:hover {
+      background-color: rgba(255,255,255,0.15);
+      transform: translateY(-5px);
+    }
+
+    .threat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: var(--accent-gold);
+    }
+
+    .threat-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .threat-desc {
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .threat-stats {
+      font-size: 0.9rem;
+      color: var(--accent-gold);
+      font-weight: 500;
+    }
+
+    /* Call to Action */
+    .cta {
+      padding: 80px 10%;
+      background: linear-gradient(to right, var(--mangrove-medium), var(--mangrove-dark));
+      color: white;
+      text-align: center;
+    }
+
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .cta-subtitle {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cta-button {
+      padding: 12px 30px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .cta-primary {
+      background-color: var(--accent-gold);
+      color: var(--mangrove-dark);
+    }
+
+    .cta-primary:hover {
+      background-color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .cta-secondary {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .cta-secondary:hover {
+      background-color: rgba(255,255,255,0.1);
+      transform: translateY(-3px);
+    }
+
+    footer {
+      background-color: #010f1c;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+      
+      .importance-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .importance-image {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      nav a {
+        font-size: 0.95rem;
+      }
+
+      .hero {
+        height: auto;
+        padding: 100px 5%;
+      text-align: center;
+        align-items: center;
+      }
+
+      .hero-content {
+        text-align: center;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .research-tabs {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta-button {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Mangrove Ecosystems: Coastal Guardians</h1>
+      <p class="hero-subtitle">Exploring the ecological significance, biogeochemical processes, and conservation challenges of these vital coastal ecosystems</p>
+      <a href="#overview" class="hero-cta">Explore Research</a>
+    </div>
+  </section>
+
+  <section class="overview" id="overview">
+    <h2 class="section-title">Scientific Overview</h2>
+    <div class="overview-grid">
+      <div class="overview-card">
+        <img src="images/shutterstock_1011788416.jpg" alt="Mangrove Distribution" class="overview-image">
+        <div class="overview-text">
+          <h3>Global Distribution</h3>
+          <p>Mangroves are found in 123 tropical and subtropical nations, covering approximately 137,760 km² globally. The largest tracts are found in Indonesia, Brazil, Australia, and Nigeria.</p>
+          <div class="overview-stats">
+            <div class="stat-item">
+              <div class="stat-number">123</div>
+              <div class="stat-label">Countries</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">137,760</div>
+              <div class="stat-label">km² Coverage</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">73</div>
+              <div class="stat-label">Species</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="overview-card">
+        <img src="images/mangrove-5121263.jpg" alt="Mangrove Adaptations" class="overview-image">
+        <div class="overview-text">
+          <h3>Unique Adaptations</h3>
+          <p>Mangroves exhibit remarkable physiological adaptations including salt exclusion, ultrafiltration at root membranes, and specialized root structures for gas exchange in anoxic sediments.</p>
+          <ul style="margin-top: 15px; color: #555; padding-left: 20px;">
+            <li style="margin-bottom: 8px;">Pneumatophores (aerial roots)</li>
+            <li style="margin-bottom: 8px;">Viviparous germination</li>
+            <li style="margin-bottom: 8px;">Salt-secreting leaves</li>
+            <li style="margin-bottom: 8px;">Ultrafiltration roots</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="overview-card">
+        <img src="images/cedb2a4cb965511688659648fd08cef4.jpg" alt="Carbon Sequestration" class="overview-image">
+        <div class="overview-text">
+          <h3>Carbon Sequestration</h3>
+          <p>Mangroves are among the most carbon-rich forests in the tropics, storing an average of 1,023 Mg carbon per hectare in their biomass and soils (Donato et al., 2011).</p>
+          <div class="overview-stats" style="margin-top: 20px;">
+            <div class="stat-item">
+              <div class="stat-number">4-5x</div>
+              <div class="stat-label">More than tropical forests</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">10%</div>
+              <div class="stat-label">Global emissions from loss</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="importance">
+    <h2 class="section-title">Ecological Importance</h2>
+    <div class="importance-container">
+      <img src="https://images.unsplash.com/photo-1589656966895-2f33e7653819?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Mangrove Ecosystem" class="importance-image">
+      <ul class="importance-list">
+        <li class="importance-item">
+          <h3>Coastal Protection</h3>
+          <p>Mangroves reduce wave energy by 66-99% and can prevent $65 billion annually in flood damages (Menéndez et al., 2020). Their complex root systems stabilize shorelines and reduce erosion.</p>
+        </li>
+        <li class="importance-item">
+          <h3>Nursery Habitats</h3>
+          <p>75% of commercially caught fish spend part of their life cycles in mangroves. A single hectare can yield 767 kg of fish annually (UNEP, 2014).</p>
+        </li>
+        <li class="importance-item">
+          <h3>Water Purification</h3>
+          <p>Mangroves filter terrestrial runoff, removing 90-100% of nitrate and phosphate loads. They process heavy metals through sedimentation and microbial activity.</p>
+        </li>
+        <li class="importance-item">
+          <h3>Biodiversity Hotspots</h3>
+          <p>Support 4,011 faunal species including 327 threatened species on the IUCN Red List (Polidoro et al., 2010).</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="research">
+    <h2 class="section-title">Current Research</h2>
+    <div class="research-tabs">
+      <div class="research-tab active" data-tab="biogeochemistry">Biogeochemistry</div>
+      <div class="research-tab" data-tab="ecology">Ecosystem Ecology</div>
+      <div class="research-tab" data-tab="conservation">Conservation</div>
+    </div>
+    
+    <div class="research-content active" id="biogeochemistry">
+      <div class="research-paper">
+        <h3 class="paper-title">Carbon Storage in Mangrove Forests</h3>
+        <p class="paper-authors">Donato, D.C., Kauffman, J.B., Murdiyarso, D., et al. (2011)</p>
+        <p class="paper-abstract">Quantification of carbon stocks in mangrove ecosystems across Indo-Pacific regions, revealing these forests store exceptionally high amounts of carbon, particularly in organic-rich soils (3-4m deep in some systems).</p>
+        <a href="https://www.nature.com/articles/ngeo1123" class="paper-link">Read full paper</a>
+      </div>
+      
+      <div class="research-paper">
+        <h3 class="paper-title">Nitrogen Cycling and Mass Balance in the World's Mangrove Forests</h3>
+        <p class="paper-authors">Alongi, D.M. (2020)</p>
+        <p class="paper-abstract">Examination of nitrogen transformations in mangrove sediments, highlighting the role of microbial communities in nitrogen fixation and denitrification processes that maintain ecosystem productivity.</p>
+        <a href="https://www.mdpi.com/2504-3129/1/2/14" class="paper-link">Read full paper</a>
+      </div>
+    </div>
+    
+    <div class="research-content" id="ecology">
+      <div class="research-paper">
+        <h3 class="paper-title">Trophic dynamics in a relatively pristine subtropical fringing mangrove community</h3>
+        <p class="paper-authors">Lee, S.Y., et al. (2012)</p>
+        <p class="paper-abstract">This study examines the trophic structure of a subtropical fringing mangrove community, providing insights into the food web dynamics within such ecosystems.</p>
+        <a href="https://www.researchgate.net/publication/235454872_Trophic_dynamics_in_a_relatively_pristine_subtropical_fringing_mangrove_community" class="paper-link">Read full paper</a>
+      </div>
+      
+      <div class="research-paper">
+        <h3 class="paper-title">Large‐scale distribution patterns of mangrove nematodes: A global meta‐analysis</h3>
+        <p class="paper-authors">Marco C. Brustolin, Ivan Nagelkerken, Gustavo Fonseca</p>
+        <p class="paper-abstract">The researchers examined whether macroecological factors, such as mangrove tree richness, latitude, and landscape metrics, influence nematode richness across different biogeographic regions.</p>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5980601/" class="paper-link">Read full paper</a>
+      </div>
+    </div>
+    
+    <div class="research-content" id="conservation">
+      <div class="research-paper">
+        <h3 class="paper-title"> Creation of a high spatio-temporal resolution global database of continuous mangrove forest cover for the 21st Century (CGMFC-21)</h3>
+        <p class="paper-authors">Stuart E. Hamilton and Daniel Casey</p>
+        <p class="paper-abstract">This research provides a comprehensive global assessment of mangrove forest cover changes from 2000 to 2012.</p>
+        <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/geb.12449" class="paper-link">Read full paper</a>
+      </div>
+      
+      <div class="research-paper">
+        <h3 class="paper-title">Community-Based Ecological Mangrove Rehabilitation (CBEMR) in Indonesia</h3>
+        <p class="paper-authors">Ben Brown, Ratna Fadillah, Yusran Nurdin, Iona Soulsby, and Rio Ahmad</p>
+        <p class="paper-abstract">he study highlights the importance of community involvement in mangrove restoration efforts, addressing both biophysical and socio-political challenges.</p>
+        <a href="https://mangroveactionproject.org/cbemr/wp-content/uploads/2015/05/CBEMR-Infosheet6.pdf?" class="paper-link">Read full paper</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="threats">
+    <h2 class="section-title">Conservation Challenges</h2>
+    <div class="threats-grid">
+      <div class="threat-card">
+        <div class="threat-icon">🦐</div>
+        <h3 class="threat-title">Aquaculture Expansion</h3>
+        <p class="threat-desc">Shrimp farming accounts for 38% of global mangrove loss. Southeast Asia has lost 30-50% of mangroves to aquaculture since 1980.</p>
+        <p class="threat-stats">Loss rate: 1-2% annually in key regions</p>
+      </div>
+      
+      <div class="threat-card">
+        <div class="threat-icon">🏗️</div>
+        <h3 class="threat-title">Coastal Development</h3>
+        <p class="threat-desc">Urbanization and tourism infrastructure fragment habitats and alter hydrology. 22% of mangroves are within 100m of human settlements.</p>
+        <p class="threat-stats">Projected loss: 30-40% by 2100 under RCP8.5</p>
+      </div>
+      
+      <div class="threat-card">
+        <div class="threat-icon">🌡️</div>
+        <h3 class="threat-title">Climate Change</h3>
+        <p class="threat-desc">Sea level rise exceeds mangrove vertical accretion rates (2.5-5mm/yr vs 1-2mm/yr). Increased storm intensity causes physical damage.</p>
+        <p class="threat-stats">Vulnerability: 30% of species threatened</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2 class="cta-title">Contribute to Mangrove Research</h2>
+    <p class="cta-subtitle">Join the global effort to understand and protect these vital ecosystems through citizen science, academic research, or conservation initiatives.</p>
+    <div class="cta-buttons">
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Research tabs functionality
+      const tabs = document.querySelectorAll('.research-tab');
+      const contents = document.querySelectorAll('.research-content');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs and contents
+          tabs.forEach(t => t.classList.remove('active'));
+          contents.forEach(c => c.classList.remove('active'));
+          
+          // Add active class to clicked tab and corresponding content
+          this.classList.add('active');
+          const tabId = this.getAttribute('data-tab');
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

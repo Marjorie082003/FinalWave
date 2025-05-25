@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ocean Layers - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-blue: #00223E;
+      --deep-black: #000;
+      --accent: #0a1a2f;
+      --text-light: #ccc;
+      --text-muted: #aaa;
+      --aqua: #00cfd5;
+      --twilight-blue: #00587a;
+      --midnight-blue: #00334e;
+      --abyss-blue: #001a33;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, var(--dark-blue), var(--deep-black));
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: #87cefa;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;   
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(3, 21, 60, 0.7)), 
+            url('images/35ecb2359b78b079fbb2178d6a709bb7.jpg');
+
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+      color: #aee0ff;
+      text-shadow: 0 0 15px rgba(0, 207, 213, 0.5);
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      max-width: 800px;
+      color: var(--text-light);
+      margin-bottom: 40px;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--aqua);
+      font-size: 1.2rem;
+      animation: bounce 2s infinite;
+      cursor: pointer;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+      40% {transform: translateY(-20px) translateX(-50%);}
+      60% {transform: translateY(-10px) translateX(-50%);}
+    }
+
+    /* Ocean Layers Visualization */
+    .ocean-layers {
+      position: relative;
+      width: 100%;
+      padding: 100px 0;
+      background: linear-gradient(to bottom, var(--dark-blue), var(--deep-black));
+    }
+
+    .layer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .layer {
+      display: flex;
+      align-items: center;
+      margin-bottom: 80px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 1s ease;
+    }
+
+    .layer.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .layer-info {
+      flex: 1;
+      padding: 40px;
+      background: rgba(0, 10, 30, 0.7);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border-left: 4px solid var(--aqua);
+      backdrop-filter: blur(5px);
+    }
+
+    .layer-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--aqua);
+      margin-bottom: 20px;
+    }
+
+    .layer-info h3 {
+      font-size: 1.2rem;
+      color: #87cefa;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .layer-info h3::before {
+      content: "";
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      background-color: var(--aqua);
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .layer-info p {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+
+    .layer-image {
+      flex: 1;
+      height: 400px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      transform: perspective(1000px) rotateY(10deg);
+      transition: all 0.5s ease;
+    }
+
+    .layer-image:hover {
+      transform: perspective(1000px) rotateY(0deg);
+    }
+
+    .layer-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .layer-image:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Depth Indicator */
+    .depth-indicator {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 50;
+    }
+
+    .depth-line {
+      width: 2px;
+      height: 300px;
+      background: linear-gradient(to bottom, var(--aqua), rgba(0, 207, 213, 0.2));
+      position: relative;
+    }
+
+    .depth-marker {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--aqua);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .depth-marker:hover {
+      transform: translateX(-50%) scale(1.5);
+    }
+
+    .depth-marker.active {
+      transform: translateX(-50%) scale(1.3);
+      box-shadow: 0 0 10px var(--aqua);
+    }
+
+    .depth-label {
+      position: absolute;
+      left: 20px;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+
+    .depth-marker:hover .depth-label {
+      opacity: 1;
+    }
+
+    /* Marine Life Showcase */
+    .marine-life {
+      padding: 80px 0;
+      background: var(--abyss-blue);
+    }
+
+    .marine-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: #aee0ff;
+      margin-bottom: 20px;
+    }
+
+    .section-title p {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .creature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .creature-card {
+      background: rgba(0, 20, 40, 0.7);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      border: 1px solid rgba(0, 207, 213, 0.1);
+    }
+
+    .creature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 207, 213, 0.2);
+      border-color: rgba(0, 207, 213, 0.3);
+    }
+
+    .creature-image {
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .creature-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .creature-card:hover .creature-image img {
+      transform: scale(1.1);
+    }
+
+    .creature-info {
+      padding: 20px;
+    }
+
+    .creature-info h3 {
+      font-size: 1.5rem;
+      color: #87cefa;
+      margin-bottom: 10px;
+    }
+
+    .creature-info p {
+      color: var(--text-light);
+      margin-bottom: 15px;
+    }
+
+    .creature-layer {
+      display: inline-block;
+      padding: 5px 10px;
+      background: rgba(0, 207, 213, 0.2);
+      color: var(--aqua);
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+
+    /* Interactive Diagram */
+    .interactive-diagram {
+      padding: 100px 0;
+      background: linear-gradient(to bottom, var(--abyss-blue), var(--deep-black));
+      position: relative;
+    }
+
+    .diagram-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      height: 800px;
+    }
+
+    .ocean-column {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 700px;
+      background: linear-gradient(to bottom, 
+        #00a8ff 0%, 
+        #0097e6 10%, 
+        #0077b6 20%, 
+        #005b96 35%, 
+        #003f72 50%, 
+        #00223e 65%, 
+        #001a2e 80%, 
+        #000000 100%);
+      border-radius: 100px;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5),
+                  0 0 40px rgba(0, 168, 255, 0.3);
+    }
+
+    .layer-label {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      padding: 15px;
+      background: rgba(0, 10, 30, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      border-left: 3px solid var(--aqua);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+    }
+
+    .layer-label:hover {
+      background: rgba(0, 30, 60, 0.9);
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    .layer-label h3 {
+      color: var(--aqua);
+      margin-bottom: 5px;
+      font-size: 1.3rem;
+    }
+
+    .layer-label p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .sunlight-zone-label { top: 10%; }
+    .twilight-zone-label { top: 30%; }
+    .midnight-zone-label { top: 50%; }
+    .abyssal-zone-label { top: 70%; }
+    .hadal-zone-label { top: 85%; }
+
+    /* Facts Section */
+    .facts-section {
+      padding: 80px 0;
+      background: var(--dark-blue);
+    }
+
+    .facts-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .fact-card {
+      background: rgba(0, 30, 60, 0.7);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      border-bottom: 3px solid var(--aqua);
+    }
+
+    .fact-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 207, 213, 0.2);
+    }
+
+    .fact-icon {
+      font-size: 2.5rem;
+      color: var(--aqua);
+      margin-bottom: 20px;
+    }
+
+    .fact-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #aee0ff;
+    }
+
+    .fact-card p {
+      color: var(--text-light);
+    }
+
+    /* Footer */
+    footer {
+      background-color: #010f1c;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: auto;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+      
+      .layer {
+        flex-direction: column;
+      }
+      
+      .layer-info, .layer-image {
+        width: 100%;
+      }
+      
+      .layer-image {
+        margin-top: 30px;
+        height: 300px;
+      }
+      
+      .depth-indicator {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.2rem;
+      }
+      
+      .layer-info h2 {
+        font-size: 2rem;
+      }
+      
+      .section-title h2 {
+        font-size: 2.2rem;
+      }
+      
+      .creature-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <div class="hero">
+    <h1>Ocean Layers</h1>
+    <p>Discover the mysterious zones that make up our oceans, from sunlit surfaces to the crushing depths of the abyss.</p>
+    <div class="scroll-down">↓ Scroll to Explore ↓</div>
+  </div>
+
+  <div class="ocean-layers">
+    <div class="depth-indicator">
+      <div class="depth-line">
+        <div class="depth-marker active" style="top: 10%;" data-layer="sunlight">
+          <span class="depth-label">Sunlight Zone (0-200m)</span>
+        </div>
+        <div class="depth-marker" style="top: 30%;" data-layer="twilight">
+          <span class="depth-label">Twilight Zone (200-1000m)</span>
+        </div>
+        <div class="depth-marker" style="top: 50%;" data-layer="midnight">
+          <span class="depth-label">Midnight Zone (1000-4000m)</span>
+        </div>
+        <div class="depth-marker" style="top: 70%;" data-layer="abyssal">
+          <span class="depth-label">Abyssal Zone (4000-6000m)</span>
+        </div>
+        <div class="depth-marker" style="top: 85%;" data-layer="hadal">
+          <span class="depth-label">Hadal Zone (6000m+)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-container">
+      <!-- Sunlight Zone -->
+      <div class="layer visible" id="sunlight">
+        <div class="layer-info">
+          <h2>Sunlight Zone (Epipelagic)</h2>
+          <h3>Depth: 0-200 meters</h3>
+          <p>The sunlight zone is where most ocean life exists. Sunlight penetrates clearly, allowing photosynthesis to occur. This zone contains the vast majority of commercial fisheries and is home to well-known ocean animals like whales, dolphins, sharks, and sea turtles.</p>
+          <p>Temperature in this zone ranges from warm tropical waters at the surface to around 5°C at 200 meters depth. Waves and currents mix the water, distributing heat and nutrients.</p>
+        </div>
+        <div class="layer-image">
+          <img src="images/d9a3ea9423121a82c06351827e60bc94.jpg" alt="Sunlight Zone">
+        </div>
+      </div>
+
+      <!-- Twilight Zone -->
+      <div class="layer" id="twilight">
+        <div class="layer-image">
+          <img src="images/47a43041f00ad12ff624c28f57ac91f8.jpg" alt="Twilight Zone">
+        </div>
+        <div class="layer-info">
+          <h2>Twilight Zone (Mesopelagic)</h2>
+          <h3>Depth: 200-1000 meters</h3>
+          <p>In the twilight zone, sunlight fades to darkness. The only light comes from bioluminescent creatures. Many animals here have large eyes to detect faint light, or produce their own light through bioluminescence.</p>
+          <p>This zone is home to strange creatures like the swordfish, wolf eels, and some species of squid. Many species migrate vertically each day, traveling to the surface at night to feed and returning to depth during the day.</p>
+        </div>
+      </div>
+
+      <!-- Midnight Zone -->
+      <div class="layer" id="midnight">
+        <div class="layer-info">
+          <h2>Midnight Zone (Bathypelagic)</h2>
+          <h3>Depth: 1000-4000 meters</h3>
+          <p>Complete darkness reigns in the midnight zone. The pressure is immense - up to 5,850 pounds per square inch. Temperatures hover just above freezing.</p>
+          <p>Creatures here are adapted to extreme conditions. Many are small with slow metabolisms. Common residents include anglerfish, giant squid, and deep-sea jellyfish. Food is scarce, so many animals are opportunistic feeders.</p>
+        </div>
+        <div class="layer-image">
+          <img src="images/880ebc6116ac4c59dfde31df5d582897.jpg" alt="Midnight Zone">
+        </div>
+      </div>
+
+      <!-- Abyssal Zone -->
+      <div class="layer" id="abyssal">
+        <div class="layer-image">
+          <img src="images/46b9caa782fd0f798bb4e5bb2ec8f74a.jpg" alt="Abyssal Zone">
+        </div>
+        <div class="layer-info">
+          <h2>Abyssal Zone (Abyssopelagic)</h2>
+          <h3>Depth: 4000-6000 meters</h3>
+          <p>The abyssal zone is a realm of perpetual darkness, near-freezing temperatures, and crushing pressures. The seafloor here consists of plains covered in soft sediment made of clay and the remains of microscopic organisms.</p>
+          <p>Life exists in slow motion here. Many creatures are small and move slowly to conserve energy. Common residents include deep-sea cucumbers, sea spiders, and the elusive dumbo octopus. Hydrothermal vents create oases of life in this otherwise barren landscape.</p>
+        </div>
+      </div>
+
+      <!-- Hadal Zone -->
+      <div class="layer" id="hadal">
+        <div class="layer-info">
+          <h2>Hadal Zone (Hadalpelagic)</h2>
+          <h3>Depth: 6000+ meters</h3>
+          <p>The hadal zone includes the deepest ocean trenches. These V-shaped canyons plunge deeper than Mount Everest is tall. The pressure here exceeds 16,000 psi - equivalent to 50 jumbo jets stacked on top of a person.</p>
+          <p>Despite the extreme conditions, life persists. Specialized creatures like snailfish, giant amphipods, and microbial life thrive around hydrothermal vents. These organisms have adapted to survive under pressures that would crush most submarines.</p>
+        </div>
+        <div class="layer-image">
+          <img src="images/6cbd11e46eff1827f50de3a542b1d718.jpg" alt="Hadal Zone">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="marine-life">
+    <div class="marine-container">
+      <div class="section-title">
+        <h2>Creatures of the Deep</h2>
+        <p>Discover some of the fascinating marine life that inhabits each ocean layer</p>
+      </div>
+      <div class="creature-grid">
+        <div class="creature-card">
+          <div class="creature-image">
+            <img src="images/1148825e5fd7ff3ff4a389572e773ebc.jpg" alt="Dolphin">
+          </div>
+          <div class="creature-info">
+            <h3>Bottlenose Dolphin</h3>
+            <span class="creature-layer">Sunlight Zone</span>
+            <p>Highly intelligent marine mammals known for their playful behavior and complex social structures.</p>
+          </div>
+        </div>
+        <div class="creature-card">
+          <div class="creature-image">
+            <img src="images/9453f955f21d14404abe9748c7655030.jpg" alt="Anglerfish">
+          </div>
+          <div class="creature-info">
+            <h3>Anglerfish</h3>
+            <span class="creature-layer">Midnight Zone</span>
+            <p>Famous for their bioluminescent lure used to attract prey in the darkness.</p>
+          </div>
+        </div>
+        <div class="creature-card">
+          <div class="creature-image">
+            <img src="images/b3d75ea3bc0748f8165d9a15f69f06c7.jpg" alt="Vampire Squid">
+          </div>
+          <div class="creature-info">
+            <h3>Vampire Squid</h3>
+            <span class="creature-layer">Twilight Zone</span>
+            <p>Neither squid nor octopus, this "living fossil" has unique adaptations for deep-sea life.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="interactive-diagram">
+    <div class="section-title">
+      <h2>Ocean Depth Visualization</h2>
+      <p>Explore how pressure, temperature, and light change with depth</p>
+    </div>
+    <div class="diagram-container">
+      <div class="ocean-column"></div>
+      <div class="layer-label sunlight-zone-label">
+        <h3>Sunlight Zone</h3>
+        <p>0-200m | Light abundant | 20°C to 5°C</p>
+      </div>
+      <div class="layer-label twilight-zone-label">
+        <h3>Twilight Zone</h3>
+        <p>200-1000m | Fading light | 5°C to 4°C</p>
+      </div>
+      <div class="layer-label midnight-zone-label">
+        <h3>Midnight Zone</h3>
+        <p>1000-4000m | Complete darkness | 4°C</p>
+      </div>
+      <div class="layer-label abyssal-zone-label">
+        <h3>Abyssal Zone</h3>
+        <p>4000-6000m | Extreme pressure | 2°C</p>
+      </div>
+      <div class="layer-label hadal-zone-label">
+        <h3>Hadal Zone</h3>
+        <p>6000m+ | Crushing pressure | 1°C</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="facts-section">
+    <div class="facts-container">
+      <div class="section-title">
+        <h2>Deep Sea Facts</h2>
+        <p>Amazing truths about the ocean's mysterious depths</p>
+      </div>
+      <div class="facts-grid">
+        <div class="fact-card">
+          <div class="fact-icon">🌊</div>
+          <h3>Pressure Points</h3>
+          <p>At the bottom of the Mariana Trench, pressure reaches over 1,000 atmospheres - enough to crush most submarines.</p>
+        </div>
+        <div class="fact-card">
+          <div class="fact-icon">🔦</div>
+          <h3>Bioluminescence</h3>
+          <p>90% of deep-sea creatures produce their own light through chemical reactions, the ocean's natural night lights.</p>
+        </div>
+        <div class="fact-card">
+          <div class="fact-icon">🗺️</div>
+          <h3>Unexplored Frontier</h3>
+          <p>We've mapped less than 20% of the ocean floor - we know more about the surface of Mars than our own deep sea.</p>
+        </div>
+        <div class="fact-card">
+          <div class="fact-icon">⏳</div>
+          <h3>Slow Life</h3>
+          <p>Some deep-sea creatures live for centuries. The Greenland shark can live over 400 years!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    // Scroll animation for layers
+    document.addEventListener('DOMContentLoaded', function() {
+      const layers = document.querySelectorAll('.layer');
+      const markers = document.querySelectorAll('.depth-marker');
+      
+      // Intersection Observer for layer animations
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            // Update depth indicator
+            const layerId = entry.target.id;
+            markers.forEach(marker => {
+              if (marker.dataset.layer === layerId) {
+                marker.classList.add('active');
+              } else {
+                marker.classList.remove('active');
+              }
+            });
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      layers.forEach(layer => {
+        observer.observe(layer);
+      });
+      
+      // Click handler for depth markers
+      markers.forEach(marker => {
+        marker.addEventListener('click', function() {
+          const layerId = this.dataset.layer;
+          const layer = document.getElementById(layerId);
+          layer.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+      
+      // Scroll down button
+      const scrollDown = document.querySelector('.scroll-down');
+      if (scrollDown) {
+        scrollDown.addEventListener('click', function() {
+          document.querySelector('.ocean-layers').scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

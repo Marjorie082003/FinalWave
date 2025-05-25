@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ocean Fun Facts - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-blue: #00223E;
+      --aqua: #00cfd5;
+      --coral: #FF6B6B;
+      --sand: #F7D6A4;
+      --text-light: #f0f8ff;
+      --text-dark: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, var(--deep-blue), #000);
+      color: var(--text-light);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: #87cefa;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .funfacts-hero {
+      position: relative;
+      width: 100%;
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      overflow: hidden;
+    }
+
+    .hero-title {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+      color: var(--aqua);
+      text-shadow: 0 0 15px rgba(0, 207, 213, 0.5);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      max-width: 700px;
+      margin-bottom: 40px;
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 15px 25px;
+      border-radius: 30px;
+      backdrop-filter: blur(5px);
+    }
+
+    /* Interactive Fact Explorer */
+    .fact-explorer {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .explorer-nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .category-btn {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .category-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .category-btn.active {
+      background-color: var(--aqua);
+      color: var(--deep-blue);
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(0, 207, 213, 0.3);
+    }
+
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    .fact-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 30px;
+      backdrop-filter: blur(5px);
+      border: 2px solid rgba(0, 207, 213, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .fact-card:hover {
+      transform: translateY(-10px) rotate(2deg);
+      box-shadow: 0 15px 30px rgba(0, 207, 213, 0.2);
+      border-color: var(--aqua);
+    }
+
+    .fact-card::before {
+      content: '?';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      font-size: 6rem;
+      color: rgba(255, 255, 255, 0.05);
+      font-family: 'Bubblegum Sans', cursive;
+      z-index: 0;
+    }
+
+    .fact-category {
+      display: inline-block;
+      padding: 5px 15px;
+      background-color: var(--coral);
+      color: white;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .fact-text {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .fact-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      opacity: 0.9;
+    }
+
+    .fact-card.active .fact-details {
+      max-height: 200px;
+      margin-top: 15px;
+    }
+
+    /* Fun Fact Generator */
+    .fact-generator {
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 60px 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .generator-title {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: var(--sand);
+    }
+
+    .generator-btn {
+      padding: 15px 40px;
+      background-color: var(--coral);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 0 rgba(0,0,0,0.2);
+    }
+
+    .generator-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 0 rgba(0,0,0,0.2);
+    }
+
+    .generator-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    }
+
+    .generator-result {
+      max-width: 800px;
+      margin: 30px auto 0;
+      padding: 30px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      display: none;
+    }
+
+    .generator-result.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-text {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+
+    .result-source {
+      font-style: italic;
+      color: var(--aqua);
+    }
+
+    /* Did You Know Section */
+    .dyk-section {
+      padding: 80px 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .dyk-title {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 3rem;
+      margin-bottom: 40px;
+      color: var(--aqua);
+    }
+
+    .dyk-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .dyk-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 40px;
+      margin: 20px;
+      backdrop-filter: blur(5px);
+      border: 2px dashed var(--aqua);
+      display: none;
+    }
+
+    .dyk-card.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .dyk-text {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .dyk-nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .dyk-nav-btn {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.3);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dyk-nav-btn.active {
+      background-color: var(--aqua);
+      transform: scale(1.2);
+    }
+
+    footer {
+      background-color: #010f1c;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .hero-title {
+        font-size: 3.5rem;
+      }
+      
+      .facts-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      nav a {
+        font-size: 0.95rem;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .fact-card {
+        padding: 20px;
+      }
+
+      .fact-text {
+        font-size: 1.1rem;
+      }
+
+      .dyk-title {
+        font-size: 2.5rem;
+      }
+
+      .dyk-text {
+        font-size: 1.3rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .facts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .explorer-nav {
+        gap: 10px;
+      }
+
+      .category-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+      }
+
+      .dyk-title {
+        font-size: 2rem;
+      }
+
+      .dyk-text {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <section class="funfacts-hero">
+    <h1 class="hero-title">Ocean Fun Facts!</h1>
+    <p class="hero-subtitle">Dive into amazing trivia about our incredible oceans and the life they contain</p>
+  </section>
+
+  <section class="fact-explorer">
+    <div class="explorer-nav">
+      <button class="category-btn active" data-category="all">All Facts</button>
+      <button class="category-btn" data-category="creatures">Marine Creatures</button>
+      <button class="category-btn" data-category="geography">Ocean Geography</button>
+      <button class="category-btn" data-category="science">Marine Science</button>
+      <button class="category-btn" data-category="history">Ocean History</button>
+    </div>
+
+    <div class="facts-grid">
+      <!-- Fact 1 -->
+      <div class="fact-card" data-category="creatures">
+        <span class="fact-category">Marine Creatures</span>
+        <p class="fact-text">The blue whale's heart is so large that a human could swim through its arteries.</p>
+        <div class="fact-details">
+          <p>A blue whale's heart can weigh up to 400 pounds (180 kg) and is about the size of a small car. Each heartbeat can be heard from 2 miles away, and it only beats 8-10 times per minute when diving.</p>
+        </div>
+      </div>
+
+      <!-- Fact 2 -->
+      <div class="fact-card" data-category="geography">
+        <span class="fact-category">Ocean Geography</span>
+        <p class="fact-text">We've explored less than 5% of Earth's oceans.</p>
+        <div class="fact-details">
+          <p>Despite covering 71% of Earth's surface, the ocean remains largely unexplored. The average depth is 12,080 feet (3,682 m), with the Mariana Trench reaching 36,201 feet (11,034 m) deep. We have better maps of Mars than of our ocean floor.</p>
+        </div>
+      </div>
+
+      <!-- Fact 3 -->
+      <div class="fact-card" data-category="science">
+        <span class="fact-category">Marine Science</span>
+        <p class="fact-text">The ocean produces at least 50% of the planet's oxygen.</p>
+        <div class="fact-details">
+          <p>Phytoplankton, microscopic marine algae, contribute between 50-85% of the oxygen in Earth's atmosphere through photosynthesis. These tiny organisms form the base of the marine food web and are more abundant than all terrestrial plants combined.</p>
+        </div>
+      </div>
+
+      <!-- Fact 4 -->
+      <div class="fact-card" data-category="creatures">
+        <span class="fact-category">Marine Creatures</span>
+        <p class="fact-text">A mantis shrimp can throw a punch at 50 mph (80 km/h).</p>
+        <div class="fact-details">
+          <p>The mantis shrimp's club-like appendages accelerate faster than a .22 caliber bullet, generating forces of over 1,500 newtons. Their strike is so fast it boils the water around it and creates flashes of light (sonoluminescence).</p>
+        </div>
+      </div>
+
+      <!-- Fact 5 -->
+      <div class="fact-card" data-category="geography">
+        <span class="fact-category">Ocean Geography</span>
+        <p class="fact-text">The Pacific Ocean is wider than the moon.</p>
+        <div class="fact-details">
+          <p>At its widest point near the equator, the Pacific Ocean stretches about 12,300 miles (19,800 km) from Indonesia to Colombia. The moon's diameter is only about 2,159 miles (3,474 km), making the Pacific more than 5 times wider.</p>
+        </div>
+      </div>
+
+      <!-- Fact 6 -->
+      <div class="fact-card" data-category="history">
+        <span class="fact-category">Ocean History</span>
+        <p class="fact-text">The deepest shipwreck ever found is the USS Johnston at 20,406 feet (6,220 m).</p>
+        <div class="fact-details">
+          <p>Discovered in 2019 in the Philippine Sea, this World War II destroyer sank during the Battle off Samar in 1944. It took multiple expeditions with advanced submersibles to locate and document the wreck at this extreme depth.</p>
+        </div>
+      </div>
+
+      <!-- Fact 7 -->
+      <div class="fact-card" data-category="science">
+        <span class="fact-category">Marine Science</span>
+        <p class="fact-text">There are underwater rivers and lakes on the ocean floor.</p>
+        <div class="fact-details">
+          <p>Brine pools form when salt-saturated water (4-5 times saltier than seawater) collects in depressions. These "lakes" have distinct shorelines and can even have waves. Underwater rivers form from dense sediment flows called turbidity currents.</p>
+        </div>
+      </div>
+
+      <!-- Fact 8 -->
+      <div class="fact-card" data-category="creatures">
+        <span class="fact-category">Marine Creatures</span>
+        <p class="fact-text">Some corals can live for more than 4,000 years.</p>
+        <div class="fact-details">
+          <p>Deep-sea black corals found off Hawaii have been aged at 4,265 years old. These slow-growing organisms provide valuable records of ocean conditions over millennia in their growth rings, similar to tree rings.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fact-generator">
+    <h2 class="generator-title">Random Ocean Fact Generator</h2>
+    <button class="generator-btn" id="generate-fact">Generate Random Fact</button>
+    <div class="generator-result" id="fact-result">
+      <p class="result-text" id="random-fact">The ocean's longest mountain range is the Mid-Ocean Ridge, stretching over 40,389 miles (65,000 km) - nearly 10 times longer than the Andes, Rockies, and Himalayas combined.</p>
+      <p class="result-source">Source: NOAA Ocean Exploration</p>
+    </div>
+  </section>
+
+  <section class="dyk-section">
+    <h2 class="dyk-title">Did You Know?</h2>
+    <div class="dyk-container">
+      <div class="dyk-card active">
+        <p class="dyk-text">The pressure at the deepest part of the ocean is equivalent to having about 50 jumbo jets piled on top of you.</p>
+      </div>
+      <div class="dyk-card">
+        <p class="dyk-text">More historical artifacts are preserved in the ocean than in all the world's museums combined.</p>
+      </div>
+      <div class="dyk-card">
+        <p class="dyk-text">The ocean contains 20 million tons of gold dissolved in its waters - about 1 gram per 100 million metric tons of seawater.</p>
+      </div>
+      <div class="dyk-card">
+        <p class="dyk-text">Underwater waves (internal waves) can reach heights of 650 feet (200 m) but are invisible at the surface.</p>
+      </div>
+    </div>
+    <div class="dyk-nav">
+      <button class="dyk-nav-btn active" data-slide="0"></button>
+      <button class="dyk-nav-btn" data-slide="1"></button>
+      <button class="dyk-nav-btn" data-slide="2"></button>
+      <button class="dyk-nav-btn" data-slide="3"></button>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Fact card toggle functionality
+      const factCards = document.querySelectorAll('.fact-card');
+      factCards.forEach(card => {
+        card.addEventListener('click', function() {
+          this.classList.toggle('active');
+        });
+      });
+
+      // Category filter functionality
+      const categoryBtns = document.querySelectorAll('.category-btn');
+      categoryBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          // Update active button
+          categoryBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Filter facts
+          const category = this.getAttribute('data-category');
+          factCards.forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      // Random fact generator
+      const randomFacts = [
+        {
+          fact: "The ocean's longest mountain range is the Mid-Ocean Ridge, stretching over 40,389 miles (65,000 km) - nearly 10 times longer than the Andes, Rockies, and Himalayas combined.",
+          source: "NOAA Ocean Exploration"
+        },
+        {
+          fact: "The loudest ocean sound ever recorded was the 'Bloop' in 1997 - an ultra-low frequency sound that matched the profile of a large iceberg fracturing.",
+          source: "NOAA Pacific Marine Environmental Laboratory"
+        },
+        {
+          fact: "A single drop of seawater can contain millions of bacteria and viruses, along with thousands of phytoplankton cells and zooplankton eggs.",
+          source: "NASA Earth Observatory"
+        },
+        {
+          fact: "The Great Barrier Reef is the largest living structure on Earth, visible from space at 1,429 miles (2,300 km) long.",
+          source: "Great Barrier Reef Marine Park Authority"
+        },
+        {
+          fact: "Ocean currents move heat around the globe like a giant conveyor belt, transporting 100 times more water than all the world's rivers combined.",
+          source: "NASA Climate Kids"
+        },
+        {
+          fact: "The Arctic Ocean is the smallest ocean, while the Southern Ocean is the newest, officially recognized in 2000.",
+          source: "National Geographic"
+        }
+      ];
+
+      const generateBtn = document.getElementById('generate-fact');
+      const resultDiv = document.getElementById('fact-result');
+      const factText = document.getElementById('random-fact');
+      const factSource = document.querySelector('.result-source');
+
+      generateBtn.addEventListener('click', function() {
+        const randomIndex = Math.floor(Math.random() * randomFacts.length);
+        factText.textContent = randomFacts[randomIndex].fact;
+        factSource.textContent = `Source: ${randomFacts[randomIndex].source}`;
+        resultDiv.classList.add('active');
+      });
+
+      // Did You Know slider
+      const dykCards = document.querySelectorAll('.dyk-card');
+      const dykNavBtns = document.querySelectorAll('.dyk-nav-btn');
+      let currentSlide = 0;
+
+      function showSlide(index) {
+        dykCards.forEach(card => card.classList.remove('active'));
+        dykNavBtns.forEach(btn => btn.classList.remove('active'));
+        
+        dykCards[index].classList.add('active');
+        dykNavBtns[index].classList.add('active');
+        currentSlide = index;
+      }
+
+      dykNavBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const slideIndex = parseInt(this.getAttribute('data-slide'));
+          showSlide(slideIndex);
+        });
+      });
+
+      // Auto-advance slides
+      setInterval(() => {
+        currentSlide = (currentSlide + 1) % dykCards.length;
+        showSlide(currentSlide);
+      }, 5000);
+    });
+  </script>
+</body>
+</html>

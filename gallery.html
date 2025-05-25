@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --dark-blue: #00223E;
+      --deep-blue: #00182e;
+      --deep-black: #000;
+      --accent: #0a1a2f;
+      --text-light: #ccc;
+      --text-muted: #aaa;
+      --ocean-teal: #00c8d0;
+      --coral-pink: #ff6b6b;
+      --jellyfish-purple: #9d65c9;
+      --seafoam-green: #7fffd4;
+      --sunlight-yellow: #ffde7d;
+      --deep-sea-blue: #003366;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, var(--dark-blue), var(--deep-black));
+      color: #fff;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Enhanced bubbles background animation */
+    .bubbles {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+    }
+    
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: rise 15s infinite ease-in;
+      filter: blur(1px);
+    }
+    
+    .bubble:nth-child(1) {
+      width: 40px;
+      height: 40px;
+      left: 10%;
+      animation-duration: 8s;
+    }
+    
+    .bubble:nth-child(2) {
+      width: 20px;
+      height: 20px;
+      left: 20%;
+      animation-duration: 5s;
+      animation-delay: 1s;
+    }
+    
+    .bubble:nth-child(3) {
+      width: 50px;
+      height: 50px;
+      left: 35%;
+      animation-duration: 7s;
+      animation-delay: 2s;
+    }
+    
+    .bubble:nth-child(4) {
+      width: 80px;
+      height: 80px;
+      left: 50%;
+      animation-duration: 11s;
+      animation-delay: 0s;
+    }
+    
+    .bubble:nth-child(5) {
+      width: 15px;
+      height: 15px;
+      left: 55%;
+      animation-duration: 6s;
+      animation-delay: 1s;
+    }
+    
+    .bubble:nth-child(6) {
+      width: 30px;
+      height: 30px;
+      left: 65%;
+      animation-duration: 8s;
+      animation-delay: 3s;
+    }
+    
+    .bubble:nth-child(7) {
+      width: 25px;
+      height: 25px;
+      left: 75%;
+      animation-duration: 7s;
+      animation-delay: 2s;
+    }
+    
+    .bubble:nth-child(8) {
+      width: 60px;
+      height: 60px;
+      left: 80%;
+      animation-duration: 6s;
+      animation-delay: 1s;
+    }
+    
+    /* Additional bubbles */
+    .bubble:nth-child(9) {
+      width: 35px;
+      height: 35px;
+      left: 25%;
+      animation-duration: 9s;
+      animation-delay: 4s;
+    }
+    
+    .bubble:nth-child(10) {
+      width: 45px;
+      height: 45px;
+      left: 70%;
+      animation-duration: 10s;
+      animation-delay: 2s;
+    }
+    
+    @keyframes rise {
+      0% {
+        bottom: -100px;
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(100px);
+      }
+      100% {
+        bottom: 1080px;
+        transform: translateX(-200px);
+      }
+    }
+
+    /* Wave animation at bottom of header */
+    .wave-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      overflow: hidden;
+      z-index: 2;
+    }
+    
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(0,34,62,0.8)" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
+      background-size: 50% 100%;
+      animation: wave 15s linear infinite;
+    }
+    
+    .wave:nth-child(2) {
+      animation-delay: 0.5s;
+      opacity: 0.5;
+      bottom: 10px;
+      height: 80%;
+    }
+    
+    @keyframes wave {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Your original navbar (unchanged) */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;
+    }
+
+    /* Enhanced header with wave effect */
+    header {
+      position: relative;
+      width: 100%;
+      height: 60vh;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background-repeat: no-repeat;
+      z-index: 2;
+    }
+
+    header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.8) contrast(1.2);
+      animation: shimmer 15s infinite alternate;
+    }
+
+    @keyframes shimmer {
+      0% {
+        filter: brightness(0.8) contrast(1.2) hue-rotate(0deg);
+      }
+      100% {
+        filter: brightness(0.85) contrast(1.3) hue-rotate(5deg);
+      }
+    }
+
+    .header-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      padding: 20px;
+      z-index: 1;
+    }
+
+    .header-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(0, 200, 208, 0.5);
+      background: linear-gradient(135deg, var(--seafoam-green), var(--ocean-teal));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    .header-text p {
+      font-size: 1.3rem;
+      color: var(--text-light);
+      max-width: 600px;
+      margin: 0 auto;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px rgba(0, 200, 208, 0.3);
+      }
+      to {
+        text-shadow: 0 0 20px rgba(0, 200, 208, 0.7), 0 0 30px rgba(127, 255, 212, 0.4);
+      }
+    }
+
+    /* Main content with ocean theme */
+    main {
+      padding: 60px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    main::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M30,10 Q50,5 70,10 T90,20 Q95,40 90,60 T70,80 Q50,85 30,80 T10,60 Q5,40 10,20 T30,10" fill="%2300223E" opacity="0.05"/></svg>');
+      background-size: 200px;
+      opacity: 0.1;
+      z-index: -1;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--ocean-teal), transparent);
+    }
+
+    /* Ocean depth indicator */
+    .depth-indicator {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 60px;
+      height: 300px;
+      background: linear-gradient(to bottom, var(--seafoam-green), var(--deep-sea-blue));
+      border-radius: 30px;
+      border: 2px solid rgba(0, 200, 208, 0.3);
+      box-shadow: 0 0 20px rgba(0, 200, 208, 0.2);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 15px 0;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .depth-indicator:hover {
+      opacity: 1;
+    }
+
+    .depth-marker {
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-size: 0.7rem;
+      position: relative;
+    }
+
+    .depth-marker::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.3);
+      top: 50%;
+    }
+
+    .depth-indicator .indicator-handle {
+      position: absolute;
+      left: -10px;
+      width: 80px;
+      height: 20px;
+      background: var(--coral-pink);
+      border-radius: 10px;
+      transition: top 0.5s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 10px;
+      font-size: 0.7rem;
+      color: white;
+      box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+    }
+
+    /* Enhanced gallery grid with ocean cards */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 40, 60, 0.5);
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+      aspect-ratio: 1/1;
+      background: var(--deep-blue);
+      border: 1px solid rgba(0, 200, 208, 0.2);
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0, 200, 208, 0.1) 0%, rgba(0, 34, 62, 0.8) 100%);
+      z-index: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at var(--x) var(--y), 
+                  rgba(255, 255, 255, 0.1) 0%, 
+                  transparent 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 15px 35px rgba(0, 168, 232, 0.4);
+      border: 1px solid rgba(0, 200, 208, 0.4);
+    }
+
+    .gallery-item:hover::before {
+      opacity: 0.5;
+    }
+
+    .gallery-item:hover::after {
+      opacity: 1;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .gallery-item-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+      color: white;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      z-index: 2;
+      backdrop-filter: blur(5px);
+    }
+
+    .gallery-item:hover .gallery-item-content {
+      transform: translateY(0);
+    }
+
+    .gallery-item h3 {
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+      color: var(--seafoam-green);
+    }
+
+    .gallery-item p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 15px;
+    }
+
+    .explore-btn {
+      display: inline-block;
+      padding: 8px 20px;
+      background: rgba(0, 200, 208, 0.2);
+      color: var(--seafoam-green);
+      border: 1px solid var(--ocean-teal);
+      border-radius: 30px;
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .explore-btn:hover {
+      background: rgba(0, 200, 208, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 200, 208, 0.3);
+    }
+
+    /* Floating sea creatures as decorative elements */
+    .sea-creature {
+      position: absolute;
+      z-index: -1;
+      opacity: 0.8;
+      animation: float 15s infinite linear;
+    }
+
+    .sea-creature.fish {
+      width: 80px;
+      height: 40px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><path d="M95,25c0,0-15,10-30,0S35,5,20,15S0,25,0,25s15-10,30,0s30,20,45,10S95,25,95,25z" fill="%2300C8D0"/><circle cx="75" cy="20" r="3" fill="%23FFF"/><circle cx="73" cy="18" r="1" fill="%23000"/></svg>') no-repeat;
+    }
+
+    .sea-creature.jellyfish {
+      width: 50px;
+      height: 80px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 80"><path d="M25,5c0,0-10,0-10,10s10,10,10,10s10,0,10-10S25,5,25,5z" fill="%239D65C9"/><path d="M15,25c0,0-5,5-5,15s5,15,5,15" stroke="%239D65C9" stroke-width="2" fill="none"/><path d="M25,25c0,0-5,5-5,15s5,15,5,15" stroke="%239D65C9" stroke-width="2" fill="none"/><path d="M35,25c0,0-5,5-5,15s5,15,5,15" stroke="%239D65C9" stroke-width="2" fill="none"/></svg>') no-repeat;
+      animation-duration: 20s;
+      animation-delay: 2s;
+    }
+
+    .sea-creature.seahorse {
+      width: 60px;
+      height: 80px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80"><path d="M40,10c0,0-10,0-15,10s-5,20-5,20s-5,0-5,10s5,10,5,10s15-10,20-20S40,10,40,10z" fill="%23FF6B6B"/><circle cx="45" cy="15" r="2" fill="%23FFF"/></svg>') no-repeat;
+      animation-duration: 25s;
+      animation-delay: 5s;
+    }
+
+    /* New sea creatures */
+    .sea-creature.octopus {
+      width: 70px;
+      height: 70px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70"><circle cx="35" cy="25" r="20" fill="%23FF9E7D"/><path d="M15,25 Q35,40 55,25 Q50,50 35,60 Q20,50 15,25" fill="%23FF9E7D"/><path d="M15,20 Q10,10 5,15 Q10,20 15,15" fill="%23FF9E7D"/><path d="M25,15 Q20,5 15,10 Q20,15 25,10" fill="%23FF9E7D"/><path d="M35,15 Q30,5 25,10 Q30,15 35,10" fill="%23FF9E7D"/><path d="M45,15 Q40,5 35,10 Q40,15 45,10" fill="%23FF9E7D"/><path d="M55,20 Q50,10 45,15 Q50,20 55,15" fill="%23FF9E7D"/><circle cx="30" cy="20" r="3" fill="%23FFF"/><circle cx="40" cy="20" r="3" fill="%23FFF"/><circle cx="30" cy="20" r="1" fill="%23000"/><circle cx="40" cy="20" r="1" fill="%23000"/></svg>') no-repeat;
+      animation-duration: 30s;
+      animation-delay: 7s;
+    }
+
+    .sea-creature.whale {
+      width: 120px;
+      height: 60px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60"><path d="M10,30 Q30,10 50,30 Q70,5 90,30 Q110,40 120,30 Q110,50 90,40 Q70,55 50,40 Q30,50 10,30" fill="%23677DB7"/><circle cx="30" cy="25" r="3" fill="%23FFF"/><circle cx="28" cy="23" r="1" fill="%23000"/></svg>') no-repeat;
+      animation-duration: 40s;
+      animation-delay: 10s;
+    }
+
+    .sea-creature.stingray {
+      width: 100px;
+      height: 60px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60"><path d="M10,30 Q50,0 90,30 Q80,50 50,60 Q20,50 10,30" fill="%238A7A9E"/><path d="M90,30 L100,20 L95,25 L90,30" fill="%238A7A9E"/></svg>') no-repeat;
+      animation-duration: 25s;
+      animation-delay: 3s;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+      }
+      25% {
+        transform: translateY(-20px) translateX(20px) rotate(5deg);
+      }
+      50% {
+        transform: translateY(0) translateX(40px) rotate(0deg);
+      }
+      75% {
+        transform: translateY(20px) translateX(20px) rotate(-5deg);
+      }
+      100% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+      }
+    }
+
+    /* Sunlight rays effect */
+    .sunlight-ray {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 222, 125, 0) 0%,
+        rgba(255, 222, 125, 0) 40%,
+        rgba(255, 222, 125, 0.03) 41%,
+        rgba(255, 222, 125, 0.03) 44%,
+        rgba(255, 222, 125, 0) 45%,
+        rgba(255, 222, 125, 0) 100%
+      );
+      z-index: -1;
+      animation: ray-movement 60s linear infinite;
+      pointer-events: none;
+    }
+
+    .sunlight-ray:nth-child(2) {
+      transform: rotate(30deg);
+      animation-delay: -10s;
+    }
+
+    .sunlight-ray:nth-child(3) {
+      transform: rotate(60deg);
+      animation-delay: -20s;
+    }
+
+    .sunlight-ray:nth-child(4) {
+      transform: rotate(90deg);
+      animation-delay: -30s;
+    }
+
+    .sunlight-ray:nth-child(5) {
+      transform: rotate(120deg);
+      animation-delay: -40s;
+    }
+
+    .sunlight-ray:nth-child(6) {
+      transform: rotate(150deg);
+      animation-delay: -50s;
+    }
+
+    @keyframes ray-movement {
+      0% {
+        transform: rotate(0deg) translateY(-100%);
+      }
+      100% {
+        transform: rotate(0deg) translateY(100%);
+      }
+    }
+
+    /* Light reflection on gallery items */
+    .light-reflection {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, 
+        rgba(255, 255, 255, 0.8) 0%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+
+    .gallery-item:hover .light-reflection {
+      opacity: 0.3;
+      transform: translate(var(--reflection-x), var(--reflection-y));
+    }
+
+    /* Your original footer (unchanged) */
+    footer {
+      background-color: #010f1c;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 60px;
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, transparent, var(--ocean-teal), transparent);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .header-text h1 {
+        font-size: 2rem;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .depth-indicator {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Animated bubbles background -->
+  <div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <!-- Sunlight rays -->
+  <div class="sunlight-ray"></div>
+  <div class="sunlight-ray"></div>
+  <div class="sunlight-ray"></div>
+  <div class="sunlight-ray"></div>
+  <div class="sunlight-ray"></div>
+  <div class="sunlight-ray"></div>
+
+  <!-- Depth indicator -->
+  <div class="depth-indicator">
+    <div class="depth-marker">Surface</div>
+    <div class="depth-marker">Sunlight Zone</div>
+    <div class="depth-marker">Twilight Zone</div>
+    <div class="depth-marker">Midnight Zone</div>
+    <div class="depth-marker">Abyss</div>
+    <div class="indicator-handle" style="top: 20%;">200m</div>
+  </div>
+
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <header>
+    <img src="images/shark-tunnel-473012.jpg" alt="Underwater background" />
+    <div class="header-text">
+      <h1>Deep Sea Gallery</h1>
+      <p>Dive into mesmerizing moments from the ocean's mysterious depths</p>
+    </div>
+    <div class="wave-container">
+      <div class="wave"></div>
+      <div class="wave"></div>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="section-title">Explore the Abyss</h2>
+    
+    <!-- Floating sea creatures -->
+    <div class="sea-creature fish" style="top: 20%; left: 5%;"></div>
+    <div class="sea-creature jellyfish" style="top: 30%; right: 8%;"></div>
+    <div class="sea-creature seahorse" style="top: 70%; left: 10%;"></div>
+    <div class="sea-creature octopus" style="top: 40%; right: 15%;"></div>
+    <div class="sea-creature whale" style="top: 60%; left: 5%;"></div>
+    <div class="sea-creature stingray" style="top: 80%; right: 10%;"></div>
+    
+    <div class="gallery-grid">
+      <!-- Original cards -->
+      <div class="gallery-item">
+        <img src="images\seabed-895507_1280.jpg" alt="Coral Reef" />
+        <div class="gallery-item-content">
+          <h3>Coral Wonderland</h3>
+          <p>Vibrant ecosystems teeming with life</p>
+          
+        </div>
+       
+      </div>
+      <div class="gallery-item">
+        <img src="images/shark-4771835_1280.jpg" alt="Underwater Forest" />
+        <div class="gallery-item-content">
+          <h3>Kelp Forests</h3>
+          <p>Ocean's towering green cathedrals</p>
+          
+        </div>
+       
+      </div>
+      <div class="gallery-item">
+        <img src="images/fish-7375042 (1).jpg" alt="Marine Life" />
+        <div class="gallery-item-content">
+          <h3>Marine Biodiversity</h3>
+          <p>Nature's most colorful palette</p>
+         
+        </div>
+       
+      </div>
+      <div class="gallery-item">
+        <img src="images\jellyfish-5384711.jpg" alt="Ocean Aesthetics" />
+        <div class="gallery-item-content">
+          <h3>Abyssal Beauty</h3>
+          <p>Where light dances with shadows</p>
+           
+        </div>
+       
+      </div>
+      <div class="gallery-item">
+        <img src="images/christmastree-worms-202320.jpg" alt="Wildlife Diversity" />
+        <div class="gallery-item-content">
+          <h3>Deep Sea Creatures</h3>
+          <p>Evolution's most fascinating designs</p>
+       
+        </div>
+        
+      </div>
+      <div class="gallery-item">
+        <img src="images\octopus-6824384.jpg" alt="Ocean Exploration" />
+        <div class="gallery-item-content">
+          <h3>Ocean Exploration</h3>
+          <p>Discovering Earth's final frontier</p>
+          
+        </div>
+      
+      </div>
+      
+      <!-- New cards -->
+      <div class="gallery-item">
+        <img src="images/eac869229b069f11ec600218b81fb6de.jpg" alt="Bioluminescent Life" />
+        <div class="gallery-item-content">
+          <h3>Glowing Depths</h3>
+          <p>The magical world of bioluminescence</p>
+         
+        </div>
+       
+      </div>
+      <div class="gallery-item">
+        <img src="images\ocean-2051760.jpg" alt="Majestic Whales" />
+        <div class="gallery-item-content">
+          <h3>Gentle Giants</h3>
+          <p>The majestic whales of the deep</p>
+         
+        </div>
+        
+      </div>
+      <div class="gallery-item">
+        <img src="images\mystery-1599527.jpg" alt="Ocean Mysteries" />
+        <div class="gallery-item-content">
+          <h3>Sunken Secrets</h3>
+          <p>Mysteries of ancient shipwrecks</p>
+          
+        </div>
+       
+      </div>
+      <div class="gallery-item">
+        <img src="images/tortoise-9328571.jpg" alt="Sea Turtles" />
+        <div class="gallery-item-content">
+          <h3>Ancient Mariners</h3>
+          <p>The timeless journey of sea turtles</p>
+          
+        </div>
+       
+      </div>
+      <div class="gallery-item">
+        <img src="images/shark-2507375.jpg" alt="Sharks" />
+        <div class="gallery-item-content">
+          <h3>Ocean Predators</h3>
+          <p>The misunderstood rulers of the sea</p>
+         
+        </div>
+        
+      </div>
+      <div class="gallery-item">
+        <img src="images/dive-2701889.jpg" alt="Deep Sea" />
+        <div class="gallery-item-content">
+          <h3>The Abyss</h3>
+          <p>Creatures from the deepest darkness</p>
+          
+        </div>
+        
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    // Dynamic light reflection based on mouse position
+    document.addEventListener('DOMContentLoaded', function() {
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      
+      galleryItems.forEach(item => {
+        item.addEventListener('mousemove', function(e) {
+          const x = e.pageX - this.offsetLeft;
+          const y = e.pageY - this.offsetTop;
+          
+          this.style.setProperty('--x', x + 'px');
+          this.style.setProperty('--y', y + 'px');
+          this.style.setProperty('--reflection-x', (x/10 - 50) + 'px');
+          this.style.setProperty('--reflection-y', (y/10 - 50) + 'px');
+          
+          const lightReflection = this.querySelector('.light-reflection');
+          if (lightReflection) {
+            lightReflection.style.transform = `translate(${x/10 - 50}px, ${y/10 - 50}px)`;
+          }
+        });
+      });
+      
+      // Depth indicator movement on scroll
+      const depthIndicator = document.querySelector('.depth-indicator .indicator-handle');
+      if (depthIndicator) {
+        window.addEventListener('scroll', function() {
+          const scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+          const newTop = 20 + (scrollPercentage * 60);
+          depthIndicator.style.top = `${newTop}%`;
+          
+          // Update depth text based on position
+          if (newTop < 30) {
+            depthIndicator.textContent = '200m';
+          } else if (newTop < 45) {
+            depthIndicator.textContent = '1000m';
+          } else if (newTop < 60) {
+            depthIndicator.textContent = '4000m';
+          } else {
+            depthIndicator.textContent = '6000m+';
+          }
+        });
+      }
+      
+      // Dynamic bubble creation
+      const bubblesContainer = document.querySelector('.bubbles');
+      for (let i = 0; i < 5; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.style.width = `${Math.random() * 30 + 10}px`;
+        bubble.style.height = bubble.style.width;
+        bubble.style.left = `${Math.random() * 100}%`;
+        bubble.style.animationDuration = `${Math.random() * 10 + 5}s`;
+        bubble.style.animationDelay = `${Math.random() * 5}s`;
+        bubblesContainer.appendChild(bubble);
+      }
+    });
+  </script>
+</body>
+</html>

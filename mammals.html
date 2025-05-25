@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep Ocean Mammals - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-blue: #00223E;
+      --deep-black: #000;
+      --accent: #0a1a2f;
+      --text-light: #ccc;
+      --text-muted: #aaa;
+      --aqua: #00cfd5;
+      --bioluminescent-blue: #D5DEEF;
+      --blue: #3672bb;
+      
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, var(--dark-blue), var(--deep-black));
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: #87cefa;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .deep-ocean-hero {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background:url('images/whale-1118876.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 800px;
+      z-index: 2;
+      animation: fadeInUp 1.5s ease-out;
+    }
+
+    .hero-content h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+      color: var(--bioluminescent-blue);
+      text-shadow: 0 0 15px rgba(7, 11, 11, 0.5);
+    }
+
+    .hero-content p {
+      font-size: 1.3rem;
+      color: var(--text-light);
+      margin-bottom: 30px;
+    }
+
+    .explore-btn {
+      display: inline-block;
+      padding: 15px 30px;
+      background: transparent;
+      color: var(--bioluminescent-blue);
+      border: 2px solid var(--bioluminescent-blue);
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .explore-btn:hover {
+      background: rgba(0, 242, 255, 0.2);
+      box-shadow: 0 0 25px rgba(0, 242, 255, 0.5);
+      transform: translateY(-3px);
+    }
+
+    .explore-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Bioluminescent particles */
+    .bio-particle {
+      position: absolute;
+      background-color: var(--bioluminescent-blue);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.6;
+      filter: blur(1px);
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+      }
+    }
+
+    /* Deep Dive Section */
+    .deep-dive-section {
+      padding: 100px 20px;
+      background: linear-gradient(to bottom, var(--deep-black), var(--deep-purple));
+      position: relative;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    .section-title h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      color: var(--aqua);
+      display: inline-block;
+    }
+
+    .section-title h2::after {
+      content: "";
+      display: block;
+      width: 100px;
+      height: 3px;
+      background: var(--aqua);
+      margin: 15px auto;
+      opacity: 0.6;
+    }
+
+    /* Mammal Cards */
+    .mammal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .mammal-card {
+      background: rgba(10, 26, 47, 0.7);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.4s ease;
+      border: 1px solid rgba(0, 207, 213, 0.2);
+      backdrop-filter: blur(5px);
+    }
+
+    .mammal-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 207, 213, 0.2);
+      border-color: rgba(0, 207, 213, 0.5);
+    }
+
+    .mammal-img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-bottom: 1px solid rgba(0, 207, 213, 0.2);
+    }
+
+    .mammal-info {
+      padding: 25px;
+    }
+
+    .mammal-info h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: var(--aqua);
+    }
+
+    .mammal-info p {
+      margin-bottom: 15px;
+      color: var(--text-light);
+    }
+
+    .mammal-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+    }
+
+    .stat-item svg {
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
+      fill: var(--aqua);
+    }
+
+    /* Depth Visualization */
+    .depth-visualization {
+      max-width: 1200px;
+      margin: 100px auto;
+      padding: 40px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      border: 1px solid rgba(0, 207, 213, 0.2);
+    }
+
+    .depth-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .depth-title h3 {
+      font-size: 2.2rem;
+      color: var(--aqua);
+      margin-bottom: 15px;
+    }
+
+    .depth-title p {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--text-light);
+    }
+
+    .depth-meter {
+      height: 500px;
+      width: 100%;
+      background: linear-gradient(to bottom, 
+        #00a8ff 0%, 
+        #0077be 10%, 
+        #005f8c 20%, 
+        #004a6d 30%, 
+        #003555 40%, 
+        #00223e 50%, 
+        #00182d 60%, 
+        #000e1c 70%, 
+        #000814 80%, 
+        #000000 90%);
+        
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .depth-marker {
+      position: absolute;
+      left: 20px;
+      width: calc(100% - 40px);
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      border-left: 3px solid var(--aqua);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .depth-marker.sperm-whale {
+      top: 15%;
+    }
+
+    .depth-marker.beaked-whale {
+      top: 35%;
+    }
+
+    .depth-marker.elephant-seal {
+      top: 55%;
+    }
+
+    .depth-marker.dolphin {
+      top: 75%;
+    }
+
+    .depth-marker::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px;
+      height: 15px;
+      background-color: var(--aqua);
+      border-radius: 50%;
+    }
+
+    /* Adaptations Section */
+    .adaptations-section {
+      padding: 100px 20px;
+      background: linear-gradient(to bottom, var(--deep-purple), var(--dark-blue));
+    }
+
+    .adaptation-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+    }
+
+    .adaptation-card {
+      background: rgba(0, 34, 62, 0.5);
+      padding: 30px;
+      border-radius: 15px;
+      border: 1px solid rgba(0, 207, 213, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .adaptation-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 207, 213, 0.1);
+      border-color: rgba(0, 207, 213, 0.5);
+    }
+
+    .adaptation-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(0, 207, 213, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .adaptation-icon svg {
+      width: 30px;
+      height: 30px;
+      fill: var(--aqua);
+    }
+
+    .adaptation-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: var(--aqua);
+    }
+
+    .adaptation-card p {
+      color: var(--text-light);
+    }
+
+    /* Conservation Section */
+    .conservation-section {
+      padding: 100px 20px;
+      background: linear-gradient(to bottom, var(--dark-blue), #000);
+      text-align: center;
+    }
+
+    .conservation-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .conservation-content h2 {
+      font-size: 2.8rem;
+      margin-bottom: 30px;
+      color: var(--aqua);
+    }
+
+    .conservation-content p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      color: var(--text-light);
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 15px 40px;
+      background: var(--aqua);
+      color: var(--dark-blue);
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 207, 213, 0.4);
+    }
+
+    .cta-button:hover {
+      background: #00e0e8;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 207, 213, 0.6);
+    }
+
+    footer {
+      background-color: #010f1c;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: auto;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .hero-content h1 {
+        font-size: 3.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2.8rem;
+      }
+      
+      .hero-content p {
+        font-size: 1.1rem;
+      }
+      
+      .section-title h2 {
+        font-size: 2.2rem;
+      }
+      
+      .depth-title h3 {
+        font-size: 1.8rem;
+      }
+      
+      nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+      
+      .mammal-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .depth-meter {
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <section class="deep-ocean-hero" id="hero">
+    <div class="hero-content">
+      <h1>Masters of the Abyss</h1>
+      <p>Discover the incredible mammals that thrive in the deepest, darkest realms of our oceans</p>
+      <a href="#mammals" class="explore-btn">Explore Deep Sea Mammals</a>
+    </div>
+    
+    <!-- Bioluminescent particles will be added by JS -->
+  </section>
+
+  <section class="deep-dive-section" id="mammals">
+    <div class="section-title">
+      <h2>Deep Ocean Mammals</h2>
+    </div>
+    
+    <div class="mammal-grid">
+      <!-- Sperm Whale -->
+      <div class="mammal-card">
+        <img src="images/Sperm-whale-4e62454.jpg" alt="Sperm Whale" class="mammal-img">
+        <div class="mammal-info">
+          <h3>Sperm Whale</h3>
+          <p>The deepest diving mammal, reaching depths of over 2,000 meters in search of giant squid. Their large heads contain spermaceti oil that helps with buoyancy control.</p>
+          <div class="mammal-stats">
+            <div class="stat-item">
+              <svg viewBox="0 0 24 24"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8 S16.41,20,12,20z M16.59,7.58L10,14.17l-2.59-2.58L6,13l4,4l8-8L16.59,7.58z"/></svg>
+              <span>2,000m+ dives</span>
+            </div>
+            <div class="stat-item">
+              <svg viewBox="0 0 24 24"><path d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19,19H5V5h14V19z M12,6 c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5S14.76,6,12,6z M12,14c-1.65,0-3-1.35-3-3s1.35-3,3-3s3,1.35,3,3S13.65,14,12,14z"/></svg>
+              <span>Echolocation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Cuvier's Beaked Whale -->
+      <div class="mammal-card">
+        <img src="images/methode_times_prod_web_bin_48b02bb4-9bfb-11e8-9b62-17ec317258a6.jpg" alt="Cuvier's Beaked Whale" class="mammal-img">
+        <div class="mammal-info">
+          <h3>Cuvier's Beaked Whale</h3>
+          <p>Record holder for the deepest and longest dive of any marine mammal - reaching nearly 3,000 meters and staying submerged for over 3 hours.</p>
+          <div class="mammal-stats">
+            <div class="stat-item">
+              <svg viewBox="0 0 24 24"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8 S16.41,20,12,20z M16.59,7.58L10,14.17l-2.59-2.58L6,13l4,4l8-8L16.59,7.58z"/></svg>
+              <span>2,992m record</span>
+            </div>
+            <div class="stat-item">
+              <svg viewBox="0 0 24 24"><path d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19,19H5V5h14V19z M12,6 c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5S14.76,6,12,6z M12,14c-1.65,0-3-1.35-3-3s1.35-3,3-3s3,1.35,3,3S13.65,14,12,14z"/></svg>
+              <span>3h 42m dive</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Elephant Seal -->
+      <div class="mammal-card">
+        <img src="images/anchor-lee-ZMagdVZTryE-unsplash-1-scaled-e1642692698220.jpg" alt="Elephant Seal" class="mammal-img">
+        <div class="mammal-info">
+          <h3>Elephant Seal</h3>
+          <p>These massive seals routinely dive to 1,500 meters, holding their breath for up to 100 minutes. They spend 80% of their lives underwater.</p>
+          <div class="mammal-stats">
+            <div class="stat-item">
+              <svg viewBox="0 0 24 24"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8 S16.41,20,12,20z M16.59,7.58L10,14.17l-2.59-2.58L6,13l4,4l8-8L16.59,7.58z"/></svg>
+              <span>1,500m dives</span>
+            </div>
+            <div class="stat-item">
+              <svg viewBox="0 0 24 24"><path d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19,19H5V5h14V19z M12,6 c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5S14.76,6,12,6z M12,14c-1.65,0-3-1.35-3-3s1.35-3,3-3s3,1.35,3,3S13.65,14,12,14z"/></svg>
+              <span>100 min breath</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Risso's Dolphin -->
+      <div class="mammal-card">
+        <img src="images/R.jpg" alt="Risso's Dolphin" class="mammal-img">
+        <div class="mammal-info">
+          <h3>Risso's Dolphin</h3>
+          <p>Known for their scarred appearance, these dolphins dive to 600 meters to feed on deep-water squid and octopus.</p>
+          <div class="mammal-stats">
+            <div class="stat-item">
+              <svg viewBox="0 0 24 24"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8 S16.41,20,12,20z M16.59,7.58L10,14.17l-2.59-2.58L6,13l4,4l8-8L16.59,7.58z"/></svg>
+              <span>600m dives</span>
+            </div>
+            <div class="stat-item">
+              <svg viewBox="0 0 24 24"><path d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19,19H5V5h14V19z M12,6 c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5S14.76,6,12,6z M12,14c-1.65,0-3-1.35-3-3s1.35-3,3-3s3,1.35,3,3S13.65,14,12,14z"/></svg>
+              <span>Social pods</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="depth-visualization">
+    <div class="depth-title">
+      <h3>Diving Depths Compared</h3>
+      <p>See how these incredible mammals compare in their diving capabilities</p>
+    </div>
+    
+    <div class="depth-meter">
+      <div class="depth-marker sperm-whale">
+        <span>Sperm Whale</span>
+        <span>2,000m</span>
+      </div>
+      <div class="depth-marker beaked-whale">
+        <span>Cuvier's Beaked Whale</span>
+        <span>2,992m</span>
+      </div>
+      <div class="depth-marker elephant-seal">
+        <span>Elephant Seal</span>
+        <span>1,500m</span>
+      </div>
+      <div class="depth-marker dolphin">
+        <span>Risso's Dolphin</span>
+        <span>600m</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="adaptations-section">
+    <div class="section-title">
+      <h2>Remarkable Adaptations</h2>
+    </div>
+    
+    <div class="adaptation-container">
+      <div class="adaptation-card">
+        <div class="adaptation-icon">
+          <svg viewBox="0 0 24 24"><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9S16.97,3,12,3z M12,19c-3.86,0-7-3.14-7-7s3.14-7,7-7s7,3.14,7,7 S15.86,19,12,19z M12,8c-2.21,0-4,1.79-4,4s1.79,4,4,4s4-1.79,4-4S14.21,8,12,8z M12,14c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2 S13.1,14,12,14z"/></svg>
+        </div>
+        <h3>Pressure Resistance</h3>
+        <p>Collapsible lungs, flexible rib cages, and specialized proteins protect their bodies from extreme pressure at depth.</p>
+      </div>
+      
+      <div class="adaptation-card">
+        <div class="adaptation-icon">
+          <svg viewBox="0 0 24 24"><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9S16.97,3,12,3z M12,19c-3.86,0-7-3.14-7-7s3.14-7,7-7s7,3.14,7,7 S15.86,19,12,19z M12,8c-2.21,0-4,1.79-4,4s1.79,4,4,4s4-1.79,4-4S14.21,8,12,8z M12,14c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2 S13.1,14,12,14z"/></svg>
+        </div>
+        <h3>Oxygen Management</h3>
+        <p>Enhanced blood volume, high myoglobin concentrations, and reduced heart rate conserve oxygen during dives.</p>
+      </div>
+      
+      <div class="adaptation-card">
+        <div class="adaptation-icon">
+          <svg viewBox="0 0 24 24"><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9S16.97,3,12,3z M12,19c-3.86,0-7-3.14-7-7s3.14-7,7-7s7,3.14,7,7 S15.86,19,12,19z M12,8c-2.21,0-4,1.79-4,4s1.79,4,4,4s4-1.79,4-4S14.21,8,12,8z M12,14c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2 S13.1,14,12,14z"/></svg>
+        </div>
+        <h3>Thermoregulation</h3>
+        <p>Thick blubber layers and specialized blood vessel arrangements maintain body heat in frigid deep waters.</p>
+      </div>
+      
+      <div class="adaptation-card">
+        <div class="adaptation-icon">
+          <svg viewBox="0 0 24 24"><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9S16.97,3,12,3z M12,19c-3.86,0-7-3.14-7-7s3.14-7,7-7s7,3.14,7,7 S15.86,19,12,19z M12,8c-2.21,0-4,1.79-4,4s1.79,4,4,4s4-1.79,4-4S14.21,8,12,8z M12,14c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2 S13.1,14,12,14z"/></svg>
+        </div>
+        <h3>Echolocation</h3>
+        <p>Sophisticated sonar systems allow them to navigate and hunt in complete darkness at extreme depths.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="conservation-section">
+    <div class="conservation-content">
+      <h2>Protecting Deep Ocean Giants</h2>
+      <p>These remarkable mammals face threats from plastic pollution, noise pollution, climate change, and deep-sea fishing. Learn how you can help protect these masters of the deep.</p>
+      <a href="#" class="cta-button">Take Action</a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    // Create bioluminescent particles
+    document.addEventListener('DOMContentLoaded', function() {
+      const heroSection = document.getElementById('hero');
+      const colors = ['#00f2ff', '#00cfd5', '#87cefa', '#00a8ff'];
+      
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('bio-particle');
+        
+        // Random properties
+        const size = Math.random() * 5 + 2;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 15;
+        const duration = 10 + Math.random() * 20;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${left}%`;
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.backgroundColor = color;
+        
+        heroSection.appendChild(particle);
+      }
+      
+      // Parallax effect for hero section
+      window.addEventListener('scroll', function() {
+        const scrollPosition = window.pageYOffset;
+        heroSection.style.backgroundPositionY = `${scrollPosition * 0.5}px`;
+      });
+    });
+  </script>
+</body>
+</html>

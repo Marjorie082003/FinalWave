@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ocean Threats - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep-blue: #00223E;
+      --coral: #FF6B6B;
+      --aqua: #00cfd5;
+      --sand: #F7D6A4;
+      --text-light: #f0f8ff;
+      --text-dark: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0b1117;
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: #87cefa;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .threats-hero {
+      position: relative;
+      width: 100%;
+      height: 70vh;
+      min-height: 500px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.8)), 
+                  url('https://images.unsplash.com/photo-1530533718754-001d2668365a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      padding: 0 20px;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      font-weight: 300;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      background-color: rgba(255,255,255,0.2);
+      backdrop-filter: blur(5px);
+      padding: 20px;
+      border-radius: 8px;
+      min-width: 200px;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--aqua);
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+    }
+
+    /* Threat Visualization */
+    .threat-viz {
+      padding: 80px 10%;
+      background-color: white;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      color: var(--deep-blue);
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--aqua);
+    }
+
+    .viz-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .viz-image {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .viz-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .legend-color {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-text {
+      flex: 1;
+    }
+
+    .legend-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .legend-desc {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* Threat Deep Dive */
+    .threat-dive {
+      padding: 80px 10%;
+      background-color: #f5f7fa;
+    }
+
+    .threat-tabs {
+      display: flex;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #ddd;
+      flex-wrap: wrap;
+    }
+
+    .threat-tab {
+      padding: 10px 25px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #777;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+    }
+
+    .threat-tab.active {
+      color: var(--deep-blue);
+      border-bottom: 3px solid var(--coral);
+    }
+
+    .threat-tab:hover:not(.active) {
+      color: var(--deep-blue);
+    }
+
+    .threat-content {
+      display: none;
+    }
+
+    .threat-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .threat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    .threat-card {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .threat-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .threat-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .threat-info {
+      padding: 25px;
+    }
+
+    .threat-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: var(--deep-blue);
+    }
+
+    .threat-stats {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .threat-stat {
+      background-color: #f0f4f8;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: var(--deep-blue);
+    }
+
+    .threat-desc {
+      color: #555;
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .threat-link {
+      color: var(--coral);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .threat-link::after {
+      content: '→';
+      margin-left: 5px;
+      transition: transform 0.3s ease;
+    }
+
+    .threat-link:hover::after {
+      transform: translateX(3px);
+    }
+
+    /* Solutions Section */
+    .solutions {
+      padding: 80px 10%;
+      background-color: white;
+    }
+
+    .solution-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .solution-card {
+      background-color: #f5f7fa;
+      border-radius: 8px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--aqua);
+    }
+
+    .solution-card:hover {
+      background-color: #e1e8f0;
+      transform: translateY(-5px);
+    }
+
+    .solution-icon {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: var(--aqua);
+    }
+
+    .solution-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: var(--deep-blue);
+    }
+
+    .solution-desc {
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .solution-link {
+      color: var(--deep-blue);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .solution-link::after {
+      content: '→';
+      margin-left: 5px;
+      transition: transform 0.3s ease;
+    }
+
+    .solution-link:hover::after {
+      transform: translateX(3px);
+    }
+
+    /* Call to Action */
+    .cta {
+      padding: 80px 10%;
+      background: linear-gradient(to right, var(--deep-blue), #00182e);
+      color: white;
+      text-align: center;
+    }
+
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .cta-subtitle {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cta-button {
+      padding: 12px 30px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .cta-primary {
+      background-color: var(--aqua);
+      color: var(--deep-blue);
+    }
+
+    .cta-primary:hover {
+      background-color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .cta-secondary {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .cta-secondary:hover {
+      background-color: rgba(255,255,255,0.1);
+      transform: translateY(-3px);
+    }
+
+    footer {
+      background-color: #010f1c;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+      
+      .viz-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .viz-image {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      
+      .threat-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      nav a {
+        font-size: 0.95rem;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .threat-tabs {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .stat-item {
+        min-width: 150px;
+        padding: 15px;
+      }
+
+      .stat-number {
+        font-size: 1.5rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta-button {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <section class="threats-hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Ocean Under Siege</h1>
+      <p class="hero-subtitle">Understanding the critical threats facing our marine ecosystems and what we can do to protect them</p>
+      
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">8M</div>
+          <div class="stat-label">Tons of plastic enter oceans yearly</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">30%</div>
+          <div class="stat-label">Of CO2 emissions absorbed by oceans</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">50%</div>
+          <div class="stat-label">Coral reefs lost since 1950</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="threat-viz">
+    <h2 class="section-title">Major Threats to Ocean Health</h2>
+    <div class="viz-container">
+      <img src="images/download.png" class="viz-image">
+      <div class="viz-legend">
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #FF6B6B;"></div>
+          <div class="legend-text">
+            <h3 class="legend-title">Plastic Pollution</h3>
+            <p class="legend-desc">8 million metric tons enter oceans annually, harming over 700 marine species</p>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #FFA36B;"></div>
+          <div class="legend-text">
+            <h3 class="legend-title">Overfishing</h3>
+            <p class="legend-desc">90% of global fish stocks fully exploited or overexploited</p>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #FFD56B;"></div>
+          <div class="legend-text">
+            <h3 class="legend-title">Climate Change</h3>
+            <p class="legend-desc">Ocean temperatures rising 0.13°C per decade since 1901</p>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #94D6FF;"></div>
+          <div class="legend-text">
+            <h3 class="legend-title">Acidification</h3>
+            <p class="legend-desc">pH decreased by 0.1 units since pre-industrial times</p>
+          </div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #6B83FF;"></div>
+          <div class="legend-text">
+            <h3 class="legend-title">Habitat Destruction</h3>
+            <p class="legend-desc">50% of mangroves and 30% of seagrass beds lost globally</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="threat-dive">
+    <h2 class="section-title">Threat Deep Dive</h2>
+    <div class="threat-tabs">
+      <div class="threat-tab active" data-threat="plastic">Plastic Pollution</div>
+      <div class="threat-tab" data-threat="fishing">Overfishing</div>
+      <div class="threat-tab" data-threat="climate">Climate Change</div>
+      <div class="threat-tab" data-threat="acid">Acidification</div>
+    </div>
+    
+    <div class="threat-content active" id="plastic">
+      <div class="threat-grid">
+        <div class="threat-card">
+          <img src="images/401ba43d05921428dfd85b72efcf69a5.jpg" alt="Plastic Pollution" class="threat-image">
+          <div class="threat-info">
+            <h3 class="threat-name">The Plastic Tide</h3>
+            <div class="threat-stats">
+              <span class="threat-stat">8M tons/year</span>
+              <span class="threat-stat">700+ species affected</span>
+            </div>
+            <p class="threat-desc">Plastic waste persists for centuries, breaking into microplastics that infiltrate every marine ecosystem. By 2050, there could be more plastic than fish in the ocean by weight.</p>
+           
+          </div>
+        </div>
+        
+        <div class="threat-card">
+          <img src="images/494815492_740102785023379_4676132656605141265_n.png" alt="Microplastics" class="threat-image">
+          <div class="threat-info">
+            <h3 class="threat-name">Microplastic Invasion</h3>
+            <div class="threat-stats">
+              <span class="threat-stat">51T particles</span>
+              <span class="threat-stat">100% of turtles affected</span>
+            </div>
+            <p class="threat-desc">Microplastics have been found in the deepest ocean trenches and Arctic ice. They absorb toxins and are ingested by plankton, entering the entire marine food web.</p>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="threat-content" id="fishing">
+      <div class="threat-grid">
+        <div class="threat-card">
+          <img src="images/fis00525-1200x800.jpg" alt="Overfishing" class="threat-image">
+          <div class="threat-info">
+            <h3 class="threat-name">Industrial Fishing</h3>
+            <div class="threat-stats">
+              <span class="threat-stat">90% exploited</span>
+              <span class="threat-stat">2.7T fish caught/year</span>
+            </div>
+            <p class="threat-desc">Modern fishing fleets are 2-3 times larger than what oceans can sustainably support. Bycatch accounts for 40% of global catch, including dolphins, turtles, and seabirds.</p>
+       
+          </div>
+        </div>
+        
+        <div class="threat-card">
+          <img src="images/f32dff9b9a1c743d99369eaf53b1b1e8.jpg" alt="Bycatch" class="threat-image">
+          <div class="threat-info">
+            <h3 class="threat-name">Ecosystem Collapse</h3>
+            <div class="threat-stats">
+              <span class="threat-stat">90% predators gone</span>
+              <span class="threat-stat">60% species decline</span>
+            </div>
+            <p class="threat-desc">Removing top predators disrupts entire food webs. Some fish populations have declined by 90% since 1950. Without change, all commercially fished species may collapse by 2048.</p>
+         
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="threat-content" id="climate">
+      <div class="threat-grid">
+        <div class="threat-card">
+          <img src="images/8385fa466c344632b91148427849d9a4.jpg" alt="Coral Bleaching" class="threat-image">
+          <div class="threat-info">
+            <h3 class="threat-name">Coral Bleaching</h3>
+            <div class="threat-stats">
+              <span class="threat-stat">50% reefs lost</span>
+              <span class="threat-stat">90% by 2050</span>
+            </div>
+            <p class="threat-desc">Rising sea temperatures cause corals to expel symbiotic algae, leading to bleaching. The 2016 Great Barrier Reef bleaching affected 93% of the reef system.</p>
+         
+          </div>
+        </div>
+        
+        <div class="threat-card">
+          <img src="images/410701558_1375438956676592_2202921357855300046_n.png" alt="Sea Level Rise" class="threat-image">
+          <div class="threat-info">
+            <h3 class="threat-name">Sea Level Rise</h3>
+            <div class="threat-stats">
+              <span class="threat-stat">3.7mm/year</span>
+              <span class="threat-stat">187M displaced</span>
+            </div>
+            <p class="threat-desc">Thermal expansion and melting ice are causing sea levels to rise, threatening coastal ecosystems and communities. Projections suggest 0.3-1m rise by 2100.</p>
+     
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="threat-content" id="acid">
+      <div class="threat-grid">
+        <div class="threat-card">
+          <img src="images/1_EsOvb8fCK9heoX6fGx6zBQ.png" alt="Ocean Acidification" class="threat-image">
+          <div class="threat-info">
+            <h3 class="threat-name">Shellfish Crisis</h3>
+            <div class="threat-stats">
+              <span class="threat-stat">30% more acidic</span>
+              <span class="threat-stat">60% species at risk</span>
+            </div>
+            <p class="threat-desc">Increased CO2 absorption lowers pH, making it harder for shellfish and corals to build calcium carbonate structures. Pteropods (key food source) show shell dissolution.</p>
+         
+          </div>
+        </div>
+        
+        <div class="threat-card">
+          <img src="images/0fc5ce9a795c25d3ac289f1889e37ab2.jpg" alt="Ecosystem Impacts" class="threat-image">
+          <div class="threat-info">
+            <h3 class="threat-name">Cascade Effects</h3>
+            <div class="threat-stats">
+              <span class="threat-stat">50% calcifiers affected</span>
+              <span class="threat-stat">$1T ecosystem value</span>
+            </div>
+            <p class="threat-desc">Acidification disrupts entire food webs. Dungeness crab larvae show developmental delays, while some fish exhibit altered behavior and predator avoidance.</p>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="solutions">
+    <h2 class="section-title">Pathways to Solutions</h2>
+    <div class="solution-cards">
+      <div class="solution-card">
+        <div class="solution-icon">♻️</div>
+        <h3 class="solution-title">Circular Economy</h3>
+        <p class="solution-desc">Transitioning to reusable systems and advanced recycling can reduce plastic waste entering oceans by 80% by 2040 through improved design and waste management.</p>
+        <a href="#" class="solution-link">Explore circular models</a>
+      </div>
+      
+      <div class="solution-card">
+        <div class="solution-icon">🎣</div>
+        <h3 class="solution-title">Sustainable Fishing</h3>
+        <p class="solution-desc">Implementing science-based catch limits, protecting nursery habitats, and reducing bycatch through new technologies can restore fish stocks within a decade.</p>
+        <a href="#" class="solution-link">Fisheries success stories</a>
+      </div>
+      
+      <div class="solution-card">
+        <div class="solution-icon">🌱</div>
+        <h3 class="solution-title">Blue Carbon</h3>
+        <p class="solution-desc">Protecting and restoring mangroves, seagrasses, and salt marshes could sequester 1.4 billion tons of CO2 annually while enhancing biodiversity.</p>
+        <a href="#" class="solution-link">Blue carbon initiatives</a>
+      </div>
+      
+      <div class="solution-card">
+        <div class="solution-icon">🛡️</div>
+        <h3 class="solution-title">MPA Networks</h3>
+        <p class="solution-desc">Marine Protected Areas covering 30% of oceans by 2030 could restore biodiversity, increase fish catches by 8M tons, and boost climate resilience.</p>
+        <a href="#" class="solution-link">MPA effectiveness</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2 class="cta-title">Be Part of the Solution</h2>
+    <p class="cta-subtitle">Join the global movement to protect our oceans through research, policy advocacy, or direct conservation action</p>
+    <div class="cta-buttons">
+      
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Threat tabs functionality
+      const threatTabs = document.querySelectorAll('.threat-tab');
+      const threatContents = document.querySelectorAll('.threat-content');
+      
+      threatTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs and contents
+          threatTabs.forEach(t => t.classList.remove('active'));
+          threatContents.forEach(c => c.classList.remove('active'));
+          
+          // Add active class to clicked tab and corresponding content
+          this.classList.add('active');
+          const threatId = this.getAttribute('data-threat');
+          document.getElementById(threatId).classList.add('active');
+        });
+      });
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ocean & Human Connection - Beneath the Waves</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-blue: #00223E;
+      --deep-black: #000;
+      --accent: #0a1a2f;
+      --text-light: #ccc;
+      --text-muted: #aaa;
+      --aqua: #00cfd5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--deep-black);
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      left: 0;
+      bottom: -4px;
+      background-color: #87cefa;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #87cefa;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+   
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: url('your-image.jpg') no-repeat center center/cover; 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 34, 62, 0.4); 
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      padding: 0 20px;
+      z-index: 2;
+      animation: fadeInUp 1.5s ease-out;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.5rem;
+      margin-bottom: 20px;
+      color: #aee0ff;
+      text-shadow: 0 0 20px rgba(0, 207, 213, 0.5);
+    }
+
+    .hero p {
+      font-size: 1.4rem;
+      color: var(--text-light);
+      margin-bottom: 30px;
+    }
+
+    .scroll-down {
+      position: absolute;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--aqua);
+      font-size: 1.2rem;
+      animation: bounce 2s infinite;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+      40% {transform: translateY(-20px) translateX(-50%);}
+      60% {transform: translateY(-10px) translateX(-50%);}
+    }
+
+    /* Connection Timeline */
+    .timeline-section {
+      padding: 100px 0;
+      background: linear-gradient(to bottom, var(--deep-black), var(--dark-blue));
+      position: relative;
+    }
+
+    .timeline-section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent, var(--aqua), transparent);
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section-title h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: #aee0ff;
+      margin-bottom: 15px;
+    }
+
+    .section-title p {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .timeline-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    .timeline-item {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 30px;
+      position: relative;
+      margin: 40px 0;
+      width: 50%;
+      left: 0;
+    }
+
+    .timeline-item:nth-child(even) {
+      left: 50%;
+      justify-content: flex-start;
+      padding-left: 30px;
+      padding-right: 0;
+    }
+
+    .timeline-content {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+      border-radius: 18px;
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+      border: 1px solid #00cfd520;
+      transition: transform 0.4s ease;
+    }
+
+    .timeline-item:hover .timeline-content {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 20px rgba(0, 200, 255, 0.3);
+    }
+
+    .timeline-content h3 {
+      font-size: 1.8rem;
+      color: var(--aqua);
+      margin-bottom: 15px;
+    }
+
+    .timeline-content p {
+      color: var(--text-light);
+      margin-bottom: 15px;
+    }
+
+    .timeline-date {
+      position: absolute;
+      top: 20px;
+      color: var(--aqua);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-date {
+      right: -120px;
+    }
+
+    .timeline-item:nth-child(even) .timeline-date {
+      left: -120px;
+    }
+
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: var(--aqua);
+      border-radius: 50%;
+      top: 30px;
+      box-shadow: 0 0 0 5px rgba(0, 207, 213, 0.2);
+    }
+
+    .timeline-item:nth-child(odd)::after {
+      right: -10px;
+    }
+
+    .timeline-item:nth-child(even)::after {
+      left: -10px;
+    }
+
+    /* Ocean Benefits Section */
+    .benefits-section {
+      padding: 100px 0;
+      background: linear-gradient(to bottom, var(--dark-blue), var(--deep-black));
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .benefit-card {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+      border-radius: 18px;
+      padding: 30px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      border: 1px solid #00cfd520;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 20px rgba(0, 200, 255, 0.3);
+    }
+
+    .benefit-card h3 {
+      font-size: 1.8rem;
+      color: var(--aqua);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .benefit-card h3 i {
+      margin-right: 15px;
+      font-size: 2rem;
+    }
+
+    .benefit-card p {
+      color: var(--text-light);
+    }
+
+    /* Call to Action */
+    .cta-section {
+      padding: 100px 0;
+      text-align: center;
+      background: url('your-image.jpg') no-repeat center center/cover; /* Same image or different one */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 34, 62, 0.7);
+      z-index: 1;
+    }
+
+    .cta-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: #aee0ff;
+      margin-bottom: 20px;
+    }
+
+    .cta-content p {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      margin-bottom: 30px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 15px 30px;
+      background: transparent;
+      color: var(--aqua);
+      border: 2px solid var(--aqua);
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button:hover {
+      background: var(--aqua);
+      color: var(--dark-blue);
+      box-shadow: 0 0 20px rgba(0, 207, 213, 0.5);
+    }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .cta-button:hover::before {
+      left: 100%;
+    }
+
+    /* Parallax Wave Effect */
+    .wave-container {
+      position: relative;
+      width: 100%;
+      height: 150px;
+      overflow: hidden;
+    }
+
+    .wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: url('https://svgshare.com/i/uYi.svg');
+      background-size: 1000px 100px;
+    }
+
+    .wave1 {
+      animation: waveMove 8s linear infinite;
+      opacity: 0.8;
+      z-index: 3;
+    }
+
+    .wave2 {
+      animation: waveMove2 10s linear infinite;
+      opacity: 0.5;
+      z-index: 2;
+    }
+
+    .wave3 {
+      animation: waveMove 12s linear infinite;
+      opacity: 0.2;
+      z-index: 1;
+    }
+
+    @keyframes waveMove {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 1000px; }
+    }
+
+    @keyframes waveMove2 {
+      0% { background-position-x: 1000px; }
+      100% { background-position-x: 0; }
+    }
+
+    footer {
+      background-color: #010f1c;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: auto;
+    }
+
+    /* New floating bubbles effect */
+    .bubbles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      background: rgba(0, 207, 213, 0.2);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+      
+      .timeline-item, 
+      .timeline-item:nth-child(even) {
+        width: 100%;
+        left: 0;
+        padding-right: 0;
+        padding-left: 50px;
+      }
+      
+      .timeline-item:nth-child(odd) .timeline-date,
+      .timeline-item:nth-child(even) .timeline-date {
+        left: -100px;
+        right: auto;
+      }
+      
+      .timeline-item::after,
+      .timeline-item:nth-child(even)::after {
+        left: -10px;
+        right: auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .section-title h2 {
+        font-size: 2.2rem;
+      }
+      
+      .timeline-item:nth-child(odd) .timeline-date,
+      .timeline-item:nth-child(even) .timeline-date {
+        position: relative;
+        left: 0;
+        top: 0;
+        margin-bottom: 10px;
+      }
+      
+      nav {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+  <nav>
+    <a href="index.html" id="home-link">Home</a>
+    <a href="about_ocean.html" id="about-link" class="protected-link">About</a>
+    <a href="marine_life.html" id="marine-life" class="protected-link">Marine Life</a>
+    <a href="ecosystem.html" id="ecosystem" class="protected-link">Ecosystem</a>
+    <a href="discover.html" id="discover-link" class="protected-link">Discover</a>
+    <a href="gallery.html" id="gallery-link" class="protected-link">Gallery</a>
+  </nav>
+
+  <section class="hero">
+    <div class="bubbles" id="bubbles"></div>
+    <div class="hero-content">
+      <h1>Ocean & Human Connection</h1>
+      <p>Discover the profound bond between humanity and the sea that has shaped civilizations, inspired cultures, and sustains life on Earth.</p>
+    </div>
+    <div class="scroll-down">Scroll Down <i class="fas fa-chevron-down"></i></div>
+  </section>
+
+  <div class="wave-container">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+   <div class="wave wave3"></div>
+  </div>
+
+  <section class="timeline-section">
+    <div class="section-title">
+      <h2>Our Shared History</h2>
+      <p>From ancient times to modern day, humans have always been connected to the ocean in profound ways.</p>
+    </div>
+    
+    <div class="timeline-container">
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Ancient Mariners</h3>
+          <p>The earliest civilizations developed along coastlines, using the ocean for food, trade, and exploration. Polynesian navigators crossed vast distances using stars and wave patterns.</p>
+        </div>
+        <span class="timeline-date">3000 BCE</span>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Age of Exploration</h3>
+          <p>Ocean voyages connected continents, leading to cultural exchanges, new trade routes, and scientific discoveries that changed human history forever.</p>
+        </div>
+        <span class="timeline-date">1400-1600</span>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Industrial Revolution</h3>
+          <p>Massive changes in fishing technology and shipping transformed our relationship with the sea, increasing both dependence and impact on marine ecosystems.</p>
+        </div>
+        <span class="timeline-date">1800s</span>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Modern Oceanography</h3>
+          <p>The 20th century brought new understanding of ocean systems and our dependence on them, revealing both their fragility and their critical role in Earth's climate.</p>
+        </div>
+        <span class="timeline-date">1900s</span>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h3>Conservation Era</h3>
+          <p>Today we recognize the need to protect marine environments while sustainably benefiting from ocean resources, balancing human needs with ecological health.</p>
+        </div>
+        <span class="timeline-date">21st Century</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="benefits-section">
+    <div class="section-title">
+      <h2>How the Ocean Sustains Us</h2>
+      <p>The ocean provides countless benefits that are essential to human survival and wellbeing.</p>
+    </div>
+    
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <h3><i class="fas fa-wind"></i> Oxygen Production</h3>
+        <p>Marine plants produce over 50% of Earth's oxygen through photosynthesis, with phytoplankton being the most significant contributors to our atmosphere.</p>
+      </div>
+      
+      <div class="benefit-card">
+        <h3><i class="fas fa-utensils"></i> Food Source</h3>
+        <p>The ocean provides a primary protein source for over 3 billion people, with sustainable fisheries being crucial for global food security.</p>
+      </div>
+      
+      <div class="benefit-card">
+        <h3><i class="fas fa-temperature-low"></i> Climate Regulation</h3>
+        <p>Oceans absorb about 30% of carbon dioxide and 90% of excess heat from human activities, acting as Earth's largest carbon sink and climate buffer.</p>
+      </div>
+      
+      <div class="benefit-card">
+        <h3><i class="fas fa-pills"></i> Medical Discoveries</h3>
+        <p>Marine organisms have provided breakthrough medicines, including cancer treatments, pain relievers, and anti-inflammatory compounds.</p>
+      </div>
+      
+      <div class="benefit-card">
+        <h3><i class="fas fa-globe-americas"></i> Economic Value</h3>
+        <p>Ocean-based industries contribute over $1.5 trillion annually to the global economy through shipping, tourism, energy, and other sectors.</p>
+      </div>
+      
+      <div class="benefit-card">
+        <h3><i class="fas fa-heart"></i> Mental Health</h3>
+        <p>Proximity to water has been scientifically proven to reduce stress and anxiety while increasing feelings of happiness and wellbeing.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Become an Ocean Guardian</h2>
+      <p>The future of our oceans depends on the choices we make today. Join the movement to protect and preserve our blue planet for generations to come.</p>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 First Fathom | Home | Animals | Habitats | Help
+  </footer>
+
+  <script>
+    // Simple scroll animation for the "scroll down" button
+    document.querySelector('.scroll-down').addEventListener('click', function() {
+      window.scrollBy({
+        top: window.innerHeight - 100,
+        behavior: 'smooth'
+      });
+    });
+    
+    // Parallax effect for hero section
+    window.addEventListener('scroll', function() {
+      const scrollPosition = window.pageYOffset;
+      const hero = document.querySelector('.hero');
+      hero.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+    });
+
+    // Create floating bubbles
+    function createBubbles() {
+      const bubblesContainer = document.getElementById('bubbles');
+      const bubbleCount = 20;
+      
+      for (let i = 0; i < bubbleCount; i++) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
+        
+        // Random size between 10px and 50px
+        const size = Math.random() * 40 + 10;
+        bubble.style.width = `${size}px`;
+        bubble.style.height = `${size}px`;
+        
+        // Random position
+        bubble.style.left = `${Math.random() * 100}%`;
+        
+        // Random animation duration between 10s and 20s
+        const duration = Math.random() * 10 + 10;
+        bubble.style.animationDuration = `${duration}s`;
+        
+        // Random delay
+        bubble.style.animationDelay = `${Math.random() * 5}s`;
+        
+        bubblesContainer.appendChild(bubble);
+      }
+    }
+    
+    // Initialize bubbles when page loads
+    window.addEventListener('load', createBubbles);
+  </script>
+</body>
+</html>
